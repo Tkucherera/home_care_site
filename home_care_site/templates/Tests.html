@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+{% static "media" as baseUrl %}
+<!-- start of page -->
+{% block content %}
+<div class="container">
+    <!-- Put the test name-->
+    <h1 style="text-align:center">Pre-test</h1>
+    <form action="{% url 'test' %}" method="post">
+        {% csrf_token %}
+    <!-- for look with test information -->
+        {% for question in questions %}
+            <p> {{ question.question}}</p><br>
+            <input type="radio" id="{{question.optionA.1}}" name="{{question.name}}" value="{{question.optionA.0}}">
+                <label for="{{question.optionA.1}}">"{{question.optionA.0}}"</label><br>
+
+            <input type="radio" id="{{question.optionB.1}}" name="{{question.name}}" value="{{question.optionB.0}}">
+                <label for="{{question.optionB.1}}">"{{question.optionB.0}}"</label><br>
+
+            <input type="radio" id="{{question.optionC.1}}" name="{{question.name}}" value="{{question.optionC.0}}">
+                <label for="{{question.optionC.1}}">"{{question.optionC.0}}"</label><br>
+
+            <input type="radio" id="{{question.optionD.1}}" name="{{question.name}}" value="{{question.optionD.0}}">
+                <label for="{{question.optionD.1}}">"{{question.optionD.0}}"</label><br>
+
+
+            <hr>
+
+        {% endfor %}
+    <button type="submit" id="pretest_submit">Submit</button>
+        </form>
+</div>
+{% endblock %}

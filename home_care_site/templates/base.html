@@ -1,0 +1,67 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- CSS AND FONT -->
+    <link rel="stylesheet" href="{% static 'css/main.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <!--<script src="{% static 'java/main.js' %}"></script>-->
+  </head>
+
+  <body>
+        <div class="white-space">
+            <nav>
+              <div class="menu-icon">
+                <span class="fa fa-bars"></span></div>
+                <a href="{% url 'index' %}"><div class="logo">
+                    Home Care </div></a>
+
+                    <div class="nav-items">
+                        <li><a href="{% url 'index' %}">Home</a></li>
+
+                        {% if user.is_authenticated %}
+                            <li><a href="{% url 'training' %}">Training</a></li>
+                            <li><a href="{% url 'test' %}">Tests</a></li>
+                            <li><a href="#">Welcome {{user.username}}</a></li>
+
+                        {% else %}
+                            <li><a href="{% url 'register' %}">Register</a></li>
+                        {% endif %}
+                        <!--<ul>
+                          <li><a href="categories?value=Wellness">Wellness</a></li>
+                          <li><a href="categories?value=Student%20Affairs">Student Affairs</a></li>
+                        </ul>-->
+
+                    </div>
+
+            </nav>
+        </div>
+
+
+        {% block content%}
+
+        {% endblock %}
+
+        <!--footer-->
+        <div class="space"></div>
+        <div class="footer">&copy Tinashe Kucherera 2021
+            <div>
+                <a href="#" class="fa fa-facebook"></a>
+                <a href="#" class="fa fa-twitter"></a>
+                <a href="#" class="fa fa-instagram"></a>
+                <a href="#" class="fa fa-youtube"></a>
+            </div>
+        </div>
+ <!-- JAVASCRIPT FILES -->
+    <script src="{% static 'js/passwords.js' %}"></script>
+    <script src="{% static 'js/quiz.js' %}"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
+</body>
+</html>
