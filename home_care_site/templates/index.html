@@ -3,7 +3,20 @@
 {% static "media" as baseUrl %}
 <!-- start of page -->
 {% block content %}
-
+       {% if user.is_authenticated %}
+        <div id="container">
+            <a href="{% url 'test' %}"><div class="circle">PRE-TEST:
+                <div style="color:{{stats.pretest_completion.color}};">{{ stats.pretest_completion.completion}}</div>
+            </div></a>
+            <a href="{% url 'training' %}">
+                <div class="circle">TRAINING:
+                    <div style="color:{{stats.training_completion.color}};">{{ stats.training_completion.completion}}</div>
+                </div></a>
+            <a href="{% url 'test' %}"><div class="circle">POST-TEST:
+                <div style="color:{{stats.postest_completion.color}};">{{ stats.postest_completion.completion}}</div>
+            </div></a>
+        </div>
+        {% endif %}
 
 
 {% endblock %}

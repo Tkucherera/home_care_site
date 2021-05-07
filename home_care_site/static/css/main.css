@@ -6,6 +6,7 @@ THIS IS THE CONTENT MENU FOR THIS CSS FILE
 2. FOOTER
 3. SOCIAL ICONS
 4. REGISTER FORM/SIGNUP
+5. Top stat circles
 *********************************************/
 /* Create two equal columns that floats next to each other */
 
@@ -478,3 +479,7 @@ quiz-container
   margin: 0 auto;
   padding: 20px;
 }
+
+/*********************
+5. circle
+*********************/

@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 # Create your models here.
 
 
@@ -34,3 +34,12 @@ class Training(models.Model):
     def __str__(self):
         return self.name
 
+class UserInfo(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    pretest_completion = models.BooleanField(default=False)
+    postest_completion = models.BooleanField(default=False)
+    training_completion = models.BooleanField(default=False)
+    postest_grade = models.IntegerField(blank=True, null=True,help_text='this grade is presented as percentage')
+
+    def __str__(self):
+        return self.user.last_name

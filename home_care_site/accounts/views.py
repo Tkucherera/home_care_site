@@ -6,11 +6,11 @@ from django.core import mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.contrib.auth.models import User, auth
-
+from .models import *
 # Create your views here.
 # Create your views here.
-
 # register view
+
 
 def login(request):
     if request.method == 'POST':
@@ -19,11 +19,12 @@ def login(request):
         user = auth.authenticate(username=username, password=password)
         if user is not None:
             auth.login(request, user)
+
             return redirect('index')
 
         else:
             messages.info(request, 'Invalid Credentials')
-            return render(request, 'login.html')
+            return redirect('login.html')
     else:
         return render(request, 'login.html')
 
@@ -45,13 +46,15 @@ def register(request):
         else:
             user = User.objects.create_user(password=password, email=email, first_name=first_name, last_name=last_name, username=username)
             user.save()
-            return redirect('index')
+
+            return redirect('login')
     return render(request, 'register.html')
 
 
 def logout(request):
     auth.logout(request)
     return redirect('login')
+
 
 
 

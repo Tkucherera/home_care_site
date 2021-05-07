@@ -3,31 +3,102 @@
 {% static "media" as baseUrl %}
 <!-- start of page -->
 {% block content %}
+
+        <div id="container">
+            <h1 style="text-align:center"> Choose test!</h1><hr>
+            <button type="button" class="start" data-toggle="modal" data-target="#pretestModal">PRE-TEST</button>
+            <!-- Modal -->
+                  <div class="modal fade" id="pretestModal" role="dialog">
+                    <div class="modal-dialog">
+
+                      <!-- Modal content-->
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          <h4 class="modal-title">Pre-Test</h4>
+                        </div>
+                        <div class="modal-body">
+                          <p>Are you sure you want to take test</p>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <!-- form that will send info to test view -->
+                          <form action="{% url 'test' %}" method="get">
+                            <button type="submit" class="btn btn-default" name="pk" value="1">Start Test</button>
+                          </form>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+            <button type="button" class="start" data-toggle="modal" data-target="#postestModal">POST-TEST</button>
+                <!-- Modal -->
+                  <div class="modal fade" id="postestModal" role="dialog">
+                    <div class="modal-dialog">
+
+                      <!-- Modal content-->
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          <h4 class="modal-title">Post-Test</h4>
+                        </div>
+                        <div class="modal-body">
+                          <p>Are you sure you want to take test</p>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                          <form action="{% url 'test' %}" method="get">
+                            <button type="submit" class="btn btn-default" name="pk" value="2">Start Test</button>
+                          </form>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+        </div>
+
+
 <div class="container">
     <!-- Put the test name-->
-    <h1 style="text-align:center">Pre-test</h1>
+    {% if pk == '1' %}
+        <h1 style="text-align:center">Pre-test</h1>
+    {% elif pk == '2' %}
+        <h1 style="text-align:center">Post-test</h1>
+    {% else %}
+        <h1 style="text-align:center">Your Test will be below here</h1>
+    {% endif %}
     <form action="{% url 'test' %}" method="post">
         {% csrf_token %}
-    <!-- for look with test information -->
+    <!-- for looP with test questions -->
         {% for question in questions %}
-            <p> {{ question.question}}</p><br>
-            <input type="radio" id="{{question.optionA.1}}" name="{{question.name}}" value="{{question.optionA.0}}">
-                <label for="{{question.optionA.1}}">"{{question.optionA.0}}"</label><br>
+            <div class="questions">
+                <div class="question"> {{ question.question}}</div><br>
+                <label class="radio-container" for="{{question.optionA.1}}">"{{question.optionA.0}}"
+                    <input type="radio" class="radio" id="{{question.optionA.1}}" name="{{question.name}}" value="{{question.optionA.0}}">
+                    <span class="checkmark"></span>
+                </label><br>
 
-            <input type="radio" id="{{question.optionB.1}}" name="{{question.name}}" value="{{question.optionB.0}}">
-                <label for="{{question.optionB.1}}">"{{question.optionB.0}}"</label><br>
+                <label class="radio-container" for="{{question.optionB.1}}">"{{question.optionB.0}}"
+                    <input type="radio" id="{{question.optionB.1}}" name="{{question.name}}" value="{{question.optionB.0}}">
+                    <span class="checkmark"></span>
+                </label><br>
 
-            <input type="radio" id="{{question.optionC.1}}" name="{{question.name}}" value="{{question.optionC.0}}">
-                <label for="{{question.optionC.1}}">"{{question.optionC.0}}"</label><br>
+                <label class="radio-container" for="{{question.optionC.1}}">"{{question.optionC.0}}"
+                    <input type="radio" id="{{question.optionC.1}}" name="{{question.name}}" value="{{question.optionC.0}}">
+                    <span class="checkmark"></span>
+                </label><br>
 
-            <input type="radio" id="{{question.optionD.1}}" name="{{question.name}}" value="{{question.optionD.0}}">
-                <label for="{{question.optionD.1}}">"{{question.optionD.0}}"</label><br>
-
-
-            <hr>
+                <label class="radio-container" for="{{question.optionD.1}}">"{{question.optionD.0}}"
+                    <input type="radio" id="{{question.optionD.1}}" name="{{question.name}}" value="{{question.optionD.0}}">
+                    <span class="checkmark"></span>
+                </label><br>
+            </div>
 
         {% endfor %}
+    {% if pk %}
     <button type="submit" id="pretest_submit">Submit</button>
         </form>
+    {% endif %}
+
 </div>
 {% endblock %}
