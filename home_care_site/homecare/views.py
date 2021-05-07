@@ -34,6 +34,7 @@ def test(request):
             # assign unique identifier to each answer
             json_q = []
             counter = 1
+
             for question in questions:
                 # put data in json and append it to json_q
                 data_input = {
@@ -45,27 +46,37 @@ def test(request):
                     'optionD': (question.optionD, f"{counter}D"),
                     'correct_answer': (question.correct_answer, f"{counter}correct")
                 }
+
                 counter += 1
                 json_q.append(data_input)
 
             return render(request, 'Tests.html', {'questions': json_q, 'pk': required_test})
 
-        if request.method == 'POST':
-            correct = ['2', '6', '8']  # get the correct answers for all the problems
-            score = 0
-            print('checking answers...')
-            n = 1
-            for answer in correct:
-                if request.POST[f"question{n}"] == answer:
-                    score += 1
-                n += 1
-            print('The score is: ', score)
+    elif request.method == 'POST':
+        # first get the correct answers
+        test_id = request.POST['test_submit']
+        questions = Question.objects.all().filter(test_id=test_id)
+        correct_answers = []
+
+        score = 0
+        print('checking answers...')
+        n = 1
+        for question in questions:
+            if request.POST[f"question{n}"] == question.correct_answer:
+                score += 1
+            n += 1
+        print('The score is: ', score)
+
+        return render(request, 'Tests.html', {'score': score})
 
             # TODO update score the the user profile
             # TODO refine the code
             #  TODO Differentiate between Pre/Post test
 
-    return render(request, 'Tests.html')
+
+    else:
+
+        return render(request, 'Tests.html')
 
 
 def training(request):
@@ -96,3 +107,33 @@ def get_userinfo(pk):  # grab users information from user_info table
     }
 
     return stats
+
+
+def calculate_percentage(score, num_questions):
+    percentage = (score/num_questions)*100
+    # parse percentage to get suggestion
+    db_scores = {
+        'A': 90,
+        'B': (80, 89),
+        'C': (70, 79),
+        'Fail': (0, 69)
+    }
+    if percentage > 69:
+        user_score = {
+            'score': score,
+            'percentage': percentage,
+            'grade': 'pass',
+            'color': 'green',
+            'message': 'congratulations you passed'
+        }
+    else:
+        user_score = {
+            'score': score,
+            'percentage': percentage,
+            'grade': 'fail',
+            'color': 'red',
+            'message': 'Unfortunately you failed'
+        }
+
+    return user_score
+

@@ -96,9 +96,10 @@
 
         {% endfor %}
     {% if pk %}
-    <button type="submit" id="pretest_submit">Submit</button>
-        </form>
+        <button type="submit" name="test_submit" value="{{pk}}">Submit</button>
     {% endif %}
+        </form>
+
 
 </div>
 {% endblock %}
