@@ -52,7 +52,7 @@ def test(request):
 
             return render(request, 'Tests.html', {'questions': json_q, 'pk': required_test})
 
-    elif request.method == 'POST':
+    if request.method == 'POST':
         # first get the correct answers
         test_id = request.POST['test_submit']
         questions = Question.objects.all().filter(test_id=test_id)
@@ -66,17 +66,20 @@ def test(request):
                 score += 1
             n += 1
         print('The score is: ', score)
+        results = calculate_percentage(score, n-1)
 
-        return render(request, 'Tests.html', {'score': score})
+        # start working to update
+        user_id = request.user.id
+        update = update_db(results, test_id, user_id)
+        print(update)
+
+        return render(request, 'Tests.html', {'score': results})
 
             # TODO update score the the user profile
             # TODO refine the code
             #  TODO Differentiate between Pre/Post test
 
-
-    else:
-
-        return render(request, 'Tests.html')
+    return render(request, 'Tests.html')
 
 
 def training(request):
@@ -94,7 +97,8 @@ def get_userinfo(pk):  # grab users information from user_info table
 
     if user_information.postest_completion:
         postest_completion['completion'] = 'Complete'
-        pretest_completion['color'] = 'green'
+        postest_completion['color'] = 'green'
+        print('color changed to green')
 
     if user_information.training_completion:
         training_completion['color'] = 'green'
@@ -110,7 +114,7 @@ def get_userinfo(pk):  # grab users information from user_info table
 
 
 def calculate_percentage(score, num_questions):
-    percentage = (score/num_questions)*100
+    percentage = round((score/num_questions)*100, 0)
     # parse percentage to get suggestion
     db_scores = {
         'A': 90,
@@ -136,4 +140,20 @@ def calculate_percentage(score, num_questions):
         }
 
     return user_score
+
+
+def update_db(score, test_name, user_id):  # this function will update the db
+    percentage = score['percentage']
+    if test_name == '2':
+        UserInfo.objects.filter(user_id=user_id).update(postest_grade=percentage, postest_completion=True)
+
+        return 'updated post-test'
+    else:
+        UserInfo.objects.filter(user_id=user_id).update(pretest_completion=True)
+
+        return 'updated pre-test'
+
+
+def certificate(request):
+    return render(request, 'certificate.html')
 

@@ -3,7 +3,7 @@
 {% static "media" as baseUrl %}
 <!-- start of page -->
 {% block content %}
-
+{% if not pk  %}
         <div id="container">
             <h1 style="text-align:center"> Choose test!</h1><hr>
             <button type="button" class="start" data-toggle="modal" data-target="#pretestModal">PRE-TEST</button>
@@ -56,7 +56,15 @@
                     </div>
                   </div>
         </div>
+{% endif%}
 
+{% if score %}
+    <div id="score-container">
+            <div class="circle">SCORE:
+                <div style="color:{{stats.pretest_completion.color}};">{{ score.percentage}}</div>
+            </div>
+    </div>
+{% endif %}
 
 <div class="container">
     <!-- Put the test name-->

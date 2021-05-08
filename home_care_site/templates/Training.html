@@ -1,8 +1,330 @@
-{% extends 'base.html' %}
 {% load static %}
-{% static "media" as baseUrl %}
-<!-- start of page -->
-{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+</head>
+ <body>
+        <div class="white-space">
+            <nav>
+              <div class="menu-icon">
+                <span class="fa fa-bars"></span></div>
+                <a href="{% url 'index' %}"><div class="logo">
+                    Home Care </div></a>
 
+                    <div class="nav-items">
+                        <li><a href="{% url 'index' %}">Home</a></li>
 
-{% endblock %}
+                        {% if user.is_authenticated %}
+                            <li><a href="{% url 'training' %}">Training</a></li>
+                            <li><a href="{% url 'test' %}">Tests</a></li>
+                            <li><a href="{% url 'logout' %}">Logout</a></li>
+                            <li><a href="#">Welcome {{user.username}}</a></li>
+
+                        {% else %}
+                            <li><a href="{% url 'register' %}">Register</a></li>
+                            <li><a href="{% url 'login' %}">Login</a></li>
+                        {% endif %}
+                        <!--<ul>
+                          <li><a href="categories?value=Wellness">Wellness</a></li>
+                          <li><a href="categories?value=Student%20Affairs">Student Affairs</a></li>
+                        </ul>-->
+
+                    </div>
+
+            </nav>
+        </div>
+
+<div>
+    <h1 style="text-align:center;margin-bottom:20px;margin-top:50px;"> Training videos </h1>
+</div>
+
+<div style="width:80%;margin: 0 auto;">
+<!-- Grid row -->
+<div class="row">
+
+  <!-- Grid column -->
+  <div class="col-lg-4 col-md-12 mb-4">
+
+    <!--Modal: Name-->
+    <div class="modal fade" id="modal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+
+        <!--Content-->
+        <div class="modal-content">
+
+          <!--Body-->
+          <div class="modal-body mb-0 p-0">
+
+            <div class="embed-responsive embed-responsive-16by9 z-depth-1-half">
+              <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/A3PDXmYoF5U"
+                allowfullscreen></iframe>
+            </div>
+
+          </div>
+
+          <!--Footer-->
+          <div class="modal-footer justify-content-center">
+            <span class="mr-4">Spread the word!</span>
+            <a type="button" class="btn-floating btn-sm btn-fb"><i class="fab fa-facebook-f"></i></a>
+            <!--Twitter-->
+            <a type="button" class="btn-floating btn-sm btn-tw"><i class="fab fa-twitter"></i></a>
+            <!--Google +-->
+            <a type="button" class="btn-floating btn-sm btn-gplus"><i class="fab fa-google-plus-g"></i></a>
+            <!--Linkedin-->
+            <a type="button" class="btn-floating btn-sm btn-ins"><i class="fab fa-linkedin-in"></i></a>
+
+            <button type="button" class="btn btn-outline-primary btn-rounded btn-md ml-4" data-dismiss="modal">Close</button>
+
+          </div>
+
+        </div>
+        <!--/.Content-->
+
+      </div>
+    </div>
+    <!--Modal: Name-->
+
+    <a><img class="img-fluid z-depth-1" src="https://mdbootstrap.com/img/screens/yt/screen-video-1.jpg" alt="video"
+        data-toggle="modal" data-target="#modal1"></a>
+
+  </div>
+  <!-- Grid column -->
+
+  <!-- Grid column -->
+  <div class="col-lg-4 col-md-6 mb-4">
+
+    <!--Modal: Name-->
+    <div class="modal fade" id="modal6" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+
+        <!--Content-->
+        <div class="modal-content">
+
+          <!--Body-->
+          <div class="modal-body mb-0 p-0">
+
+            <div class="embed-responsive embed-responsive-16by9 z-depth-1-half">
+              <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/wTcNtgA6gHs"
+                allowfullscreen></iframe>
+            </div>
+
+          </div>
+
+          <!--Footer-->
+          <div class="modal-footer justify-content-center">
+            <span class="mr-4">Spread the word!</span>
+            <a type="button" class="btn-floating btn-sm btn-fb"><i class="fab fa-facebook-f"></i></a>
+            <!--Twitter-->
+            <a type="button" class="btn-floating btn-sm btn-tw"><i class="fab fa-twitter"></i></a>
+            <!--Google +-->
+            <a type="button" class="btn-floating btn-sm btn-gplus"><i class="fab fa-google-plus-g"></i></a>
+            <!--Linkedin-->
+            <a type="button" class="btn-floating btn-sm btn-ins"><i class="fab fa-linkedin-in"></i></a>
+
+            <button type="button" class="btn btn-outline-primary btn-rounded btn-md ml-4" data-dismiss="modal">Close</button>
+
+          </div>
+
+        </div>
+        <!--/.Content-->
+
+      </div>
+    </div>
+    <!--Modal: Name-->
+
+    <a><img class="img-fluid z-depth-1" src="https://mdbootstrap.com/img/screens/yt/screen-video-2.jpg" alt="video"
+        data-toggle="modal" data-target="#modal6"></a>
+
+  </div>
+  <!-- Grid column -->
+
+  <!-- Grid column -->
+  <div class="col-lg-4 col-md-6 mb-4">
+
+    <!--Modal: Name-->
+    <div class="modal fade" id="modal4" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+
+        <!--Content-->
+        <div class="modal-content">
+
+          <!--Body-->
+          <div class="modal-body mb-0 p-0">
+
+            <div class="embed-responsive embed-responsive-16by9 z-depth-1-half">
+              <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/vlDzYIIOYmM"
+                allowfullscreen></iframe>
+            </div>
+
+          </div>
+
+          <!--Footer-->
+          <div class="modal-footer justify-content-center">
+            <span class="mr-4">Spread the word!</span>
+            <a type="button" class="btn-floating btn-sm btn-fb"><i class="fab fa-facebook-f"></i></a>
+            <!--Twitter-->
+            <a type="button" class="btn-floating btn-sm btn-tw"><i class="fab fa-twitter"></i></a>
+            <!--Google +-->
+            <a type="button" class="btn-floating btn-sm btn-gplus"><i class="fab fa-google-plus-g"></i></a>
+            <!--Linkedin-->
+            <a type="button" class="btn-floating btn-sm btn-ins"><i class="fab fa-linkedin-in"></i></a>
+
+            <button type="button" class="btn btn-outline-primary btn-rounded btn-md ml-4" data-dismiss="modal">Close</button>
+
+          </div>
+
+        </div>
+        <!--/.Content-->
+
+      </div>
+    </div>
+    <!--Modal: Name-->
+
+    <a><img class="img-fluid z-depth-1" src="https://mdbootstrap.com/img/screens/yt/screen-video-3.jpg" alt="video"
+        data-toggle="modal" data-target="#modal4"></a>
+
+  </div>
+  <!-- Grid column -->
+
+</div>
+<!-- Grid row -->
+<div>
+    <h1 style="text-align:center;margin-bottom:20px;margin-top:50px;"> Training Powerpoint </h1>
+</div>
+    <!-- POWERPOINTS -->
+    <div class="row">
+        <div class="col-lg-4 col-md-12 mb-4">
+        <!--Modal: Name-->
+        <div class="modal fade" id="modal7" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg" role="document">
+
+            <!--Content-->
+            <div class="modal-content">
+
+              <!--Body-->
+              <div class="modal-body mb-0 p-0">
+
+                <div class="embed-responsive embed-responsive-16by9 z-depth-1-half">
+                  <iframe src="https://staug0-my.sharepoint.com/personal/tkucherera_st-aug_edu/_layouts/15/Doc.aspx?sourcedoc={434f0b21-9cc1-4623-b8ed-7a1cdeb9a5b5}&amp;action=embedview&amp;wdAr=1.7777777777777777" width="962px" height="565px" frameborder="0">This is an embedded
+                    <a target="_blank" href="https://office.com">Microsoft Office</a> presentation, powered by
+                    <a target="_blank" href="https://office.com/webapps">Office</a>.
+                  </iframe>
+                </div>
+
+              </div>
+
+              <!--Footer-->
+              <div class="modal-footer justify-content-center">
+                <span class="mr-4">Spread the word!</span>
+                <a type="button" class="btn-floating btn-sm btn-fb"><i class="fab fa-facebook-f"></i></a>
+                <!--Twitter-->
+                <a type="button" class="btn-floating btn-sm btn-tw"><i class="fab fa-twitter"></i></a>
+                <!--Google +-->
+                <a type="button" class="btn-floating btn-sm btn-gplus"><i class="fab fa-google-plus-g"></i></a>
+                <!--Linkedin-->
+                <a type="button" class="btn-floating btn-sm btn-ins"><i class="fab fa-linkedin-in"></i></a>
+
+                <button type="button" class="btn btn-outline-primary btn-rounded btn-md ml-4" data-dismiss="modal">Close</button>
+
+              </div>
+
+            </div>
+            <!--/.Content-->
+
+          </div>
+        </div>
+        <!--Modal: Name-->
+        <a><img class="img-fluid z-depth-1" src="{% static 'images/ppt_2.png' %}" alt="video"
+            data-toggle="modal" data-target="#modal7"></a>
+    </div>
+        <div class="col-lg-4 col-md-12 mb-4">
+    <!--Modal: Name-->
+    <div class="modal fade" id="modal9" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+
+        <!--Content-->
+        <div class="modal-content">
+
+          <!--Body-->
+          <div class="modal-body mb-0 p-0">
+
+            <div class="embed-responsive embed-responsive-16by9 z-depth-1-half">
+              <iframe src="https://staug0-my.sharepoint.com/personal/jbennett_st-aug_edu/_layouts/15/Doc.aspx?sourcedoc={362ad75b-4609-4946-a7f0-450ea180e007}&amp;action=embedview&amp;wdAr=1.7777777777777777" width="962px" height="565px" frameborder="0">This is an embedded
+                  <a target="_blank" href="https://office.com">Microsoft Office</a> presentation, powered by
+                  <a target="_blank" href="https://office.com/webapps">Office</a>.
+              </iframe>
+            </div>
+
+          </div>
+
+          <!--Footer-->
+          <div class="modal-footer justify-content-center">
+            <span class="mr-4">Spread the word!</span>
+            <a type="button" class="btn-floating btn-sm btn-fb"><i class="fab fa-facebook-f"></i></a>
+            <!--Twitter-->
+            <a type="button" class="btn-floating btn-sm btn-tw"><i class="fab fa-twitter"></i></a>
+            <!--Google +-->
+            <a type="button" class="btn-floating btn-sm btn-gplus"><i class="fab fa-google-plus-g"></i></a>
+            <!--Linkedin-->
+            <a type="button" class="btn-floating btn-sm btn-ins"><i class="fab fa-linkedin-in"></i></a>
+
+            <button type="button" class="btn btn-outline-primary btn-rounded btn-md ml-4" data-dismiss="modal">Close</button>
+
+          </div>
+
+        </div>
+        <!--/.Content-->
+
+      </div>
+    </div>
+    <!--Modal: Name-->
+    <a><img class="img-fluid z-depth-1" src="{% static '/images/ppt_1.png' %}" alt="video"
+        data-toggle="modal" data-target="#modal7"></a>
+</div>
+    </div>
+</div>
+                <!--footer-->
+                    <div class="space"></div>
+                    <div class="footer">&copy Tinashe Kucherera 2021
+                        <div>
+                            <a href="#" class="fa fa-facebook"></a>
+                            <a href="#" class="fa fa-twitter"></a>
+                            <a href="#" class="fa fa-instagram"></a>
+                            <a href="#" class="fa fa-youtube"></a>
+                        </div>
+                    </div>
+<script>
+    $('#modal1').on('hidden.bs.modal', function (e) {
+  // do something...
+  $('#modal1 iframe').attr("src", $("#modal1 iframe").attr("src"));
+});
+
+$('#modal6').on('hidden.bs.modal', function (e) {
+  // do something...
+  $('#modal6 iframe').attr("src", $("#modal6 iframe").attr("src"));
+});
+
+$('#modal4').on('hidden.bs.modal', function (e) {
+  // do something...
+  $('#modal4 iframe').attr("src", $("#modal4 iframe").attr("src"));
+});
+
+    $('#modal9').on('hidden.bs.modal', function (e) {
+  // do something...
+  $('#modal9 iframe').attr("src", $("#modal9 iframe").attr("src"));
+});
+
+$('#modal7').on('hidden.bs.modal', function (e) {
+  // do something...
+  $('#modal7 iframe').attr("src", $("#modal7 iframe").attr("src"));
+});
+</script>
+
+ </body>
+</html>
