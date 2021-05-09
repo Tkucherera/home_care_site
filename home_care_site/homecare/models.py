@@ -26,10 +26,23 @@ class Question(models.Model):
         return self.question
 
 
-class Training(models.Model):
+class TrainingVideo(models.Model):
     name = models.CharField(max_length=200)
     topic = models.CharField(max_length=100, help_text='if no topic put N/A')
     duration = models.IntegerField(help_text='input time takes to complete training in mins')
+    img = models.ImageField(upload_to='media/')
+    video_link = models.CharField(max_length=300, help_text='enter link to youtube video')
+
+    def __str__(self):
+        return self.name
+
+
+class TrainingPpt(models.Model):
+    name = models.CharField(max_length=200)
+    topic = models.CharField(max_length=100, help_text='if no topic put N/A')
+    duration = models.IntegerField(help_text='input time takes to complete training in mins')
+    img = models.ImageField(upload_to='media/')
+    ppt = models.CharField(max_length=300, help_text='enter link to ppt in Onedrive')
 
     def __str__(self):
         return self.name

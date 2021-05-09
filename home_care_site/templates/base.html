@@ -20,37 +20,50 @@
   </head>
 
   <body>
-        <div class="white-space">
-            <nav>
-              <div class="menu-icon">
-                <span class="fa fa-bars"></span></div>
-                <a href="{% url 'index' %}"><div class="logo">
-                    Home Care </div></a>
+        <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" style="color:black;" href="{% url 'index' %}">Home Care</a>
+    </div>
 
-                    <div class="nav-items">
-                        <li><a href="{% url 'index' %}">Home</a></li>
-                        <li><a href="{% url 'certificate' %}">Cert</a></li>
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="active"><a style="color:black;" href="{% url 'index'%}">Home <span class="sr-only">(current)</span></a></li>
+          {% if user.is_authenticated %}
 
-                        {% if user.is_authenticated %}
-                            <li><a href="{% url 'training' %}">Training</a></li>
-                            <li><a href="{% url 'test' %}">Tests</a></li>
-                            <li><a href="{% url 'logout' %}">Logout</a></li>
-                            <li><a href="#">Welcome {{user.username}}</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Get-certified <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a style="color:black;" href="{% url 'test' %}">Pre-test</a></li>
+                <li><a style="color:black;" href="{% url 'training' %}">Training</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a style="color:black;" href="{% url 'test' %}">Post-test</a></li>
+              </ul>
+            </li>
+            <li><a style="color:black;" href="{% url 'test' %}">Tests</a></li>
 
-                        {% else %}
-                            <li><a href="{% url 'register' %}">Register</a></li>
-                            <li><a href="{% url 'login' %}">Login</a></li>
-                        {% endif %}
-                        <!--<ul>
-                          <li><a href="categories?value=Wellness">Wellness</a></li>
-                          <li><a href="categories?value=Student%20Affairs">Student Affairs</a></li>
-                        </ul>-->
+          {% else %}
+            <li><a style="color:black;" href="{% url 'login' %}">Login</a></li>
+          {% endif %}
 
-                    </div>
-
-            </nav>
-        </div>
-
+      </ul>
+        {% if user.is_authenticated %}
+          <ul class="nav navbar-nav navbar-right">
+            <li><a style="color:black;" href="#">Welcome: {{user.username}}</a></li>
+            <li><a style="color:black;" href="{% url 'logout' %}">Logout</a></li>
+          </ul>
+        {% endif %}
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
         <!-- Have a top nav with a lil info -->
         {% block content%}
 

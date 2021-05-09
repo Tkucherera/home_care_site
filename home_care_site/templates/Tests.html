@@ -3,7 +3,8 @@
 {% static "media" as baseUrl %}
 <!-- start of page -->
 {% block content %}
-{% if not pk  %}
+{% if user.is_authenticated %}
+{% if not pk and not score %}
         <div id="container">
             <h1 style="text-align:center"> Choose test!</h1><hr>
             <button type="button" class="start" data-toggle="modal" data-target="#pretestModal">PRE-TEST</button>
@@ -60,9 +61,41 @@
 
 {% if score %}
     <div id="score-container">
-            <div class="circle">SCORE:
-                <div style="color:{{stats.pretest_completion.color}};">{{ score.percentage}}</div>
+        <div class="row">
+
+            <div class="col-xs-6">
+                <div class="circle">SCORE:
+                    <div style="color:{{stats.pretest_completion.color}};">{{ score.percentage}} %</div>
+                </div>
             </div>
+
+            <div class="col-xs-6" style="margin-top:20px" >
+                <div style="font-size:14px;text-align:center"><b>Your results:</b><hr>
+                    <div>You got {{ score.score}}  out of {{score.num_questions}} questions right</div><br><br>
+                    <div style="color:{{score.color}};">The score as percentage is:<b> {{ score.percentage}}%</b></div><br><br>
+                    <div>{{score.message}}</div><hr>
+                    {% if score.grade == 'pass' and score.test == '2' %}
+                    <div style="margin-top:10px;align:center;">
+                        <form action="{% url 'certificate' %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-primary btn-rounded btn-md ml-4" name='certificate' value="{{score}}">Get Certificate</button>
+                        </form>
+                    </div>
+                    {% elif score.grade == 'fail' %}
+                    <div style="margin-top:10px;align:center;">
+                        <form action="{% url 'test' %}" method="get">
+                            <button type="submit" class="btn btn-outline-primary btn-rounded btn-md ml-4" name='pk' value={{score.test}}>Retake Test</button>
+                        </form>
+                    </div>
+                    {% else %}
+                        <a href="{% url 'training'%}">
+                            <button type="submit" class="btn btn-outline-primary btn-rounded btn-md ml-4" }>start training</button>
+                        </a>
+
+                    {% endif %}
+                </div>
+            </div>
+        </div>
     </div>
 {% endif %}
 
@@ -110,4 +143,7 @@
 
 
 </div>
+{% else %}
+<h1>Please Login</h1>
+{% endif %}
 {% endblock %}

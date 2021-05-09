@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from .models import *
 # Create your views here.
 # index view
+import datetime
+import json
 
 
 def index(request):
@@ -9,13 +11,21 @@ def index(request):
     # also create new user in userinfo table
     user_id = request.user.id
     if user_id:
-        if not UserInfo.objects.get(user_id=user_id):
+        # save new user
+        if UserInfo.objects.filter(user_id=user_id).exists():
+            stats = get_userinfo(user_id)
+
+            return render(request, 'index.html', {'stats': stats})
+
+        else:
             user_info = UserInfo(user_id=user_id)
             user_info.save()
-
-        stats = get_userinfo(user_id)
-
-        return render(request, 'index.html', {'stats': stats})
+            print(' new user saved!')
+            try:
+                stats = get_userinfo(user_id)
+                return render(request, 'index.html', {'stats': stats})
+            except'Internal Server Error':
+                return render(request, 'index.html')
 
     return render(request, 'index.html')
 
@@ -66,54 +76,58 @@ def test(request):
                 score += 1
             n += 1
         print('The score is: ', score)
-        results = calculate_percentage(score, n-1)
+        results = calculate_percentage(score, n-1, test_id)
 
         # start working to update
         user_id = request.user.id
         update = update_db(results, test_id, user_id)
+
+        # if the user has passed post test print certificate
         print(update)
 
         return render(request, 'Tests.html', {'score': results})
 
-            # TODO update score the the user profile
             # TODO refine the code
-            #  TODO Differentiate between Pre/Post test
 
     return render(request, 'Tests.html')
 
 
 def training(request):
-    return render(request, 'Training.html')
+    videos = TrainingVideo.objects.all()
+
+    return render(request, 'Training.html', {'videos': videos})
 
 
 def get_userinfo(pk):  # grab users information from user_info table
-    user_information = UserInfo.objects.get(user_id=pk)
-    pretest_completion = {'completion': 'Take Test', 'color': 'red'}
-    postest_completion = {'completion': 'Take Test', 'color': 'red'}
-    training_completion = {'completion': 'Train', 'color': 'red'}
-    if user_information.pretest_completion:
-        pretest_completion['completion'] = 'Complete'
-        pretest_completion['color'] = 'green'
+    if UserInfo.objects.get(user_id=pk):
+        user_information = UserInfo.objects.get(user_id=pk)
+        pretest_completion = {'completion': 'Take Test', 'color': 'red'}
+        postest_completion = {'completion': 'Take Test', 'color': 'red'}
+        training_completion = {'completion': 'Train', 'color': 'red'}
+        if user_information.pretest_completion:
+            pretest_completion['completion'] = 'Complete'
+            pretest_completion['color'] = 'green'
 
-    if user_information.postest_completion:
-        postest_completion['completion'] = 'Complete'
-        postest_completion['color'] = 'green'
-        print('color changed to green')
+        if user_information.postest_completion:
+            postest_completion['completion'] = 'Complete'
+            postest_completion['color'] = 'green'
+            print('color changed to green')
 
-    if user_information.training_completion:
-        training_completion['color'] = 'green'
-        training_completion['completion'] = 'Complete'
+        if user_information.training_completion:
+            training_completion['color'] = 'green'
+            training_completion['completion'] = 'Complete'
 
-    stats = {
-        'pretest_completion': pretest_completion,
-        'postest_completion': postest_completion,
-        'training_completion': training_completion
-    }
+        stats = {
+            'pretest_completion': pretest_completion,
+            'postest_completion': postest_completion,
+            'training_completion': training_completion
+        }
 
-    return stats
+        return stats
+    return None
 
 
-def calculate_percentage(score, num_questions):
+def calculate_percentage(score, num_questions, test_id):
     percentage = round((score/num_questions)*100, 0)
     # parse percentage to get suggestion
     db_scores = {
@@ -128,7 +142,9 @@ def calculate_percentage(score, num_questions):
             'percentage': percentage,
             'grade': 'pass',
             'color': 'green',
-            'message': 'congratulations you passed'
+            'message': 'congratulations you passed',
+            'test': test_id,
+            'num_questions': num_questions
         }
     else:
         user_score = {
@@ -136,7 +152,9 @@ def calculate_percentage(score, num_questions):
             'percentage': percentage,
             'grade': 'fail',
             'color': 'red',
-            'message': 'Unfortunately you failed'
+            'message': 'Unfortunately you failed',
+            'test': test_id,
+            'num_questions': num_questions
         }
 
     return user_score
@@ -155,5 +173,12 @@ def update_db(score, test_name, user_id):  # this function will update the db
 
 
 def certificate(request):
-    return render(request, 'certificate.html')
+    if request.method == 'POST':
+        post = request.POST['certificate']
+        # convert from str back to dict
+        score = eval(post)
+        fullname = request.user.get_full_name
+        date = datetime.date.today()
+
+        return render(request, 'certificate.html', {'fullname': fullname, 'date': date, 'score': score} )
 
