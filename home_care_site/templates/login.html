@@ -9,7 +9,9 @@
     <h1>Login</h1>
     <p>Enter your Username and Password to login</p>
     <hr>
-
+      {% for message in messages%}
+        <p style="color:red">{{message}}</p>
+      {% endfor %}
     <label for="username"><b>username</b></label><br>
     <input type="text" placeholder="Enter username" name="username" id="username" required><br>
 

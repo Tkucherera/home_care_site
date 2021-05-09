@@ -7,7 +7,7 @@ import json
 
 
 def index(request):
-    # tests = Test.objects.all()
+    slides = HomeSlides.objects.all()
     # also create new user in userinfo table
     user_id = request.user.id
     if user_id:
@@ -15,7 +15,7 @@ def index(request):
         if UserInfo.objects.filter(user_id=user_id).exists():
             stats = get_userinfo(user_id)
 
-            return render(request, 'index.html', {'stats': stats})
+            return render(request, 'index.html', {'stats': stats, 'slides': slides})
 
         else:
             user_info = UserInfo(user_id=user_id)
@@ -23,11 +23,11 @@ def index(request):
             print(' new user saved!')
             try:
                 stats = get_userinfo(user_id)
-                return render(request, 'index.html', {'stats': stats})
+                return render(request, 'index.html', {'stats': stats, 'slides': slides})
             except'Internal Server Error':
                 return render(request, 'index.html')
 
-    return render(request, 'index.html')
+    return render(request, 'index.html', {'slides': slides})
 
 
 def test(request):
@@ -167,7 +167,7 @@ def update_db(score, test_name, user_id):  # this function will update the db
 
         return 'updated post-test'
     else:
-        UserInfo.objects.filter(user_id=user_id).update(pretest_completion=True)
+        UserInfo.objects.filter(user_id=user_id).update(pretest_completion=True, pretest_grade=percentage)
 
         return 'updated pre-test'
 

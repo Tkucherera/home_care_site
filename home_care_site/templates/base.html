@@ -37,6 +37,9 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
         <li class="active"><a style="color:black;" href="{% url 'index'%}">Home <span class="sr-only">(current)</span></a></li>
+        {% if slides %}
+            <li><a style="color:black;" href="#contact">Contact Us</a></li>
+        {% endif %}
           {% if user.is_authenticated %}
 
             <li class="dropdown">
@@ -81,7 +84,6 @@
         </div>
  <!-- JAVASCRIPT FILES -->
     <script src="{% static 'js/passwords.js' %}"></script>
-    <script src="{% static 'js/quiz.js' %}"></script>
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 
 </body>

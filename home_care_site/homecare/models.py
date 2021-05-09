@@ -51,9 +51,21 @@ class TrainingPpt(models.Model):
 class UserInfo(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     pretest_completion = models.BooleanField(default=False)
+    pretest_grade = models.IntegerField(blank=True, null=True, help_text='this grade is presented as percentage')
     postest_completion = models.BooleanField(default=False)
     training_completion = models.BooleanField(default=False)
     postest_grade = models.IntegerField(blank=True, null=True, help_text='this grade is presented as percentage')
 
     def __str__(self):
         return self.user.last_name
+
+
+class HomeSlides(models.Model):
+    name = models.CharField(max_length=100)
+    header_description = models.TextField(help_text='enter the heading text for caption')
+    body_description = models.TextField(help_text='enter the summary description')
+    image = models.ImageField(upload_to='media/')
+
+    def __str__(self):
+        return self.name
+

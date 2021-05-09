@@ -24,7 +24,7 @@ def login(request):
 
         else:
             messages.info(request, 'Invalid Credentials')
-            return redirect('login.html')
+            return redirect('login')
     else:
         return render(request, 'login.html')
 
