@@ -78,19 +78,27 @@ WSGI_APPLICATION = 'home_care_site.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-
 DATABASES = {
-      'default': {
+
+    'default': {
 
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'd4v8rjl836ofbq',
-        'USER': 'cylvmytxtqynfb',
-        'PASSWORD': "229f41b14b1dcc433f0392b45b4b77f096000e80662928be5b37301863a60c66",
-        'HOST': "ec2-18-215-111-67.compute-1.amazonaws.com",
+        'NAME': os.environ.get('DATABASE_NAME'),
+        'USER': os.environ.get('HEROKU_POSTGRES_USER'),
+        'PASSWORD': os.environ.get('POSTGRES_PASS'),
+        'HOST': os.environ.get('HEROKU_HOST'),
         'PORT': '5432',
 
     }
+
 }
+
+
+
+import dj_database_url
+
+DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
+
 
 #'default': {
 
