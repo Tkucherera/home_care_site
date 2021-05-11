@@ -5,7 +5,11 @@
     <option name="PARENT_ENVS" value="true" />
     <envs>
       <env name="PYTHONUNBUFFERED" value="1" />
-      <env name="AWS_SECRET_KEY_ID_HOMECARE" value="django-insecure-kz7lp1ch1#27dp0+7nlyc_1vnd^w3^@*+l)9umfwa*s8_g$w4@" />
+      <env name="AWS_SECRET_KEY_ID_HOMECARE" value="AKIAV5RL7JX7SSF4H4WH" />
+      <env name="DATABASE_NAME_HOMECARE" value="d4v8rjl836ofbq" />
+      <env name="HEROKU_HOST_HOMECARE" value="ec2-18-215-111-67.compute-1.amazonaws.com" />
+      <env name="HEROKU_POSTGRES_USER_HOMECARE" value="cylvmytxtqynfb" />
+      <env name="POSTGRES_PASS_HOMECARE" value="229f41b14b1dcc433f0392b45b4b77f096000e80662928be5b37301863a60c66" />
     </envs>
     <option name="SDK_HOME" value="$PROJECT_DIR$/home_care/bin/python" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/.." />

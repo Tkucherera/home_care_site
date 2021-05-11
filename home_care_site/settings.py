@@ -80,16 +80,26 @@ WSGI_APPLICATION = 'home_care_site.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
+      'default': {
+
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'homecare',
-        'USER': 'postgres',
-        'PASSWORD': 'Tinashe',
-        'HOST': 'localhost',
-        'PORT': '5432'
+        'NAME': 'd4v8rjl836ofbq',
+        'USER': 'cylvmytxtqynfb',
+        'PASSWORD': "229f41b14b1dcc433f0392b45b4b77f096000e80662928be5b37301863a60c66",
+        'HOST': "ec2-18-215-111-67.compute-1.amazonaws.com",
+        'PORT': '5432',
 
     }
 }
+
+#'default': {
+
+#        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#        'NAME': os.environ.get('DATABASE_NAME_HOMECARE'),
+ #       'USER': os.environ.get('HEROKU_POSTGRES_USER_HOMECARE'),
+#        'PASSWORD': os.environ.get('POSTGRES_PASS_HOMECARE'),
+ #       'HOST': os.environ.get('HEROKU_HOST_HOMECARE'),
+ ##  }
 
 
 # Password validation
