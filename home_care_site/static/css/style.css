@@ -13,25 +13,44 @@ hr{
 #container{
     margin : 20px auto;
     background-color: white;
-    height: 300px;
-    width : 700px;
+    height: relative;
+    width : 50%;
     border-radius: 5px;
     box-shadow: 0px 5px 15px 0px;
     position: relative;
+
 }
+
+
 
 #score-container{
     margin : 20px auto;
     background-color: white;
-    height: 300px;
+    height: relative;
     width : 700px;
     border-radius: 5px;
     box-shadow: 0px 5px 15px 0px;
     position: relative;
 }
 
+.img-circle {
+  width: 150px;
+  height: 150px;
+  padding:30px;
+  border-radius: 50%;
+  font-size: 20px;
+  font-weight: bold;
+  border : 1px solid green;
+  color: black;
+  display:inline-block;
+  cursor:pointer;
+  margin-top:50px;
+  margin-left:10px;
+  text-align: center;
+  background: lightgrey;
+}
 
-.circle {
+.score-circle {
   width: 200px;
   height: 200px;
   padding:30px;
@@ -46,6 +65,118 @@ hr{
   margin-left:10px;
   text-align: center;
   background: lightgrey;
+}
+
+.circle {
+  width: 31%;
+  height: 31%;
+  padding:30px;
+  border-radius: 50%;
+  font-size: 20px;
+  font-weight: bold;
+  border : 10px solid green;
+  color: black;
+  display:inline-block;
+  cursor:pointer;
+  margin-top:50px;
+  margin-left:10px;
+  text-align: center;
+  background: lightgrey;
+}
+
+@media only screen and (max-width: 1000px) {
+  .circle {
+    width: 150px;
+    height: 150px;
+    margin-left:100px;
+    font-size: 12px;
+
+  }
+
+    .score-circle {
+    width: 150px;
+    height: 150px;
+    margin-left:100px;
+    font-size: 12px;
+
+  }
+
+  #container {
+    width: 80%;
+
+  }
+
+  #score-container {
+    width: 80%;
+  }
+
+  .item img {
+    height: 700px;
+  }
+}
+
+@media only screen and (max-width: 700px) {
+  .circle {
+    width: 150px;
+    height: 150px;
+    margin-left:100px;
+    font-size: 11px;
+
+  }
+
+  #container {
+    width: 77%;
+
+  }
+
+  .score-circle {
+    width: 150px;
+    height: 150px;
+    margin-left:10px;
+    font-size: 12px;
+
+  }
+
+  #score-container {
+    width: 77%;
+    margin: 0 auto;
+  }
+
+  .item img {
+    height: 500px;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .circle {
+    width: 170px;
+    height: 170px;
+    margin-left:100px;
+    font-size: 15px;
+  }
+
+  #container {
+    width: 100%;
+    align:center;
+
+  }
+
+  .score-circle {
+    width: 150px;
+    height: 150px;
+    margin-left:10px;
+    font-size: 12px;
+
+  }
+
+  #score-container {
+    width: 100%;
+    margin-left: 0px;
+  }
+
+  .item img {
+    height: 300px;
+  }
 }
 
 .circle:hover{

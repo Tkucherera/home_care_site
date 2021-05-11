@@ -18,8 +18,12 @@
                           <button type="button" class="close" data-dismiss="modal">&times;</button>
                           <h4 class="modal-title">Pre-Test</h4>
                         </div>
-                        <div class="modal-body">
-                          <p>Are you sure you want to take test</p>
+                        <div class="modal-body" style="margin-left:40px;">
+                            <p style="font-size:20px;">Are you sure you want to take {{test.0.name}}</p>
+                            <ol>
+                              <li>The difficulty level is: <b>{{ test.0.Difficulty}}</b></li><br>
+                              <li>There are <b>{{ test.0.num_questions}} questions</b></li>
+                            </ol>
                         </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -43,8 +47,12 @@
                           <button type="button" class="close" data-dismiss="modal">&times;</button>
                           <h4 class="modal-title">Post-Test</h4>
                         </div>
-                        <div class="modal-body">
-                          <p>Are you sure you want to take test</p>
+                        <div class="modal-body" style="margin-left:40px;">
+                          <p style="font-size:20px;">Are you sure you want to take {{test.1.name}}</p>
+                            <ol>
+                              <li>The difficulty level is: <b>{{ test.1.Difficulty}}</b></li><br>
+                              <li>There are <b>{{ test.1.num_questions}} questions</b></li>
+                            </ol>
                         </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -64,7 +72,7 @@
         <div class="row">
 
             <div class="col-xs-6">
-                <div class="circle">SCORE:
+                <div class="score-circle">SCORE:
                     <div style="color:{{stats.pretest_completion.color}};">{{ score.percentage}} %</div>
                 </div>
             </div>
@@ -115,22 +123,22 @@
             <div class="questions">
                 <div class="question"> {{ question.question}}</div><br>
                 <label class="radio-container" for="{{question.optionA.1}}">"{{question.optionA.0}}"
-                    <input type="radio" class="radio" id="{{question.optionA.1}}" name="{{question.name}}" value="{{question.optionA.0}}">
+                    <input type="radio" class="radio" id="{{question.optionA.1}}" name="{{question.name}}" value="{{question.optionA.0}}" required>
                     <span class="checkmark"></span>
                 </label><br>
 
                 <label class="radio-container" for="{{question.optionB.1}}">"{{question.optionB.0}}"
-                    <input type="radio" id="{{question.optionB.1}}" name="{{question.name}}" value="{{question.optionB.0}}">
+                    <input type="radio" id="{{question.optionB.1}}" name="{{question.name}}" value="{{question.optionB.0}}" required>
                     <span class="checkmark"></span>
                 </label><br>
 
                 <label class="radio-container" for="{{question.optionC.1}}">"{{question.optionC.0}}"
-                    <input type="radio" id="{{question.optionC.1}}" name="{{question.name}}" value="{{question.optionC.0}}">
+                    <input type="radio" id="{{question.optionC.1}}" name="{{question.name}}" value="{{question.optionC.0}}" required>
                     <span class="checkmark"></span>
                 </label><br>
 
                 <label class="radio-container" for="{{question.optionD.1}}">"{{question.optionD.0}}"
-                    <input type="radio" id="{{question.optionD.1}}" name="{{question.name}}" value="{{question.optionD.0}}">
+                    <input type="radio" id="{{question.optionD.1}}" name="{{question.name}}" value="{{question.optionD.0}}" required>
                     <span class="checkmark"></span>
                 </label><br>
             </div>

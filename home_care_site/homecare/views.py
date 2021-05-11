@@ -89,7 +89,7 @@ def test(request):
 
             # TODO refine the code
 
-    return render(request, 'Tests.html')
+    return render(request, 'Tests.html', {'test': tests})
 
 
 def training(request):
