@@ -47,6 +47,7 @@ def test(request):
 
             for question in questions:
                 # put data in json and append it to json_q
+
                 data_input = {
                     'name': f"question{counter}",
                     'question': question.question,
