@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+{% static "media" as baseUrl %}
+<!-- start of page -->
+{% block content %}
+<form action=" " method = 'POST' onsubmit="someFunction(this);return false">
+  {% csrf_token %}
+  <div class="container">
+    <h1>Login</h1>
+    <p>Enter your Username and Password to login</p>
+    <hr>
+      {% for message in messages%}
+        <p style="color:red">{{message}}</p>
+      {% endfor %}
+    <label for="username"><b>username</b></label><br>
+    <input type="text" placeholder="Enter username" name="username" id="username" required><br>
+
+    <label for="password"><b>Password</b></label ><br>
+    <input type="password" name="password" id="password" required><br>
+
+    <button type="submit" class="registerbtn">Login</button>
+  </div>
+
+  <div class="container signin">
+    <p>Don't have an account? <a href="{% url 'register' %}">register</a>.</p>
+  </div>
+</form>
+
+
+{% endblock %}

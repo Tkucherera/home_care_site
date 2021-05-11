@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load static %}
+{% static "media" as baseUrl %}
+<!-- start of page -->
+{% block content %}
+       {% if user.is_authenticated %}
+        <div id="container">
+            <a href="{% url 'test' %}"><div class="circle">PRE-TEST:
+                <div style="color:{{stats.pretest_completion.color}};">{{ stats.pretest_completion.completion}}</div>
+            </div></a>
+            <a href="{% url 'training' %}">
+                <div class="circle">TRAINING:
+                    <div style="color:{{stats.training_completion.color}};">{{ stats.training_completion.completion}}</div>
+                </div></a>
+            <a href="{% url 'test' %}"><div class="circle">POST-TEST:
+                <div style="color:{{stats.postest_completion.color}};">{{ stats.postest_completion.completion}}</div>
+            </div></a>
+        </div>
+        {% endif %}
+
+<section id="slides">
+
+    <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+  <!-- Indicators -->
+  <ol class="carousel-indicators">
+    <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+    <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+    <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+  </ol>
+
+  <!-- Wrapper for slides -->
+  <div class="carousel-inner" role="listbox">
+      {% for slide in slides %}
+      {% if slide.name == 'home_health' %}
+        <div class="item active">
+            <img style="width:100%;" src="media/{{slide.image}}" alt="{{slide.name}}">
+                <div class="carousel-caption">
+                    <h3>{{ slide.header_description}}</h3>
+                    <p>{{slide.body_description}}</p>
+                </div>
+        </div>
+      {% else %}
+        <div class="item ">
+            <img style="width:100%;" src="media/{{slide.image}}" alt="{{slide.name}}">
+                <div class="carousel-caption">
+                    <h3>{{ slide.header_description}}</h3>
+                    <p>{{slide.body_description}}</p>
+                </div>
+        </div>
+      {% endif %}
+      {% endfor %}
+  </div>
+
+  <!-- Controls -->
+  <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div>
+</section>
+
+<!-- contact -->
+<section id="contact">
+    <div style='padding:20px;' id="container">
+        <div class="row">
+            <div class="col-xs-6">
+                <strong>Home Care, Inc.</strong><br>
+                1355 Market Street, Suite 900<br>
+                Raleigh, CA 94103<br>
+                <abbr title="Phone">P:</abbr> (123) 456-7890 <br><br><br>
+
+                <strong>Full Name</strong><br><br>
+                <a href="mailto:#"><button type="button" class="btn btn-outline-primary btn-rounded btn-md ml-4">first.last@example.com</button></a>
+            </div>
+
+
+            <div class="col-xs-6">
+                <img class='img-circle'  style="padding:1px;margin-top:10px;" src="{% static 'images/ppt_1.png' %}">
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
