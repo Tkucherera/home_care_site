@@ -78,20 +78,24 @@ WSGI_APPLICATION = 'home_care_site.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
+
 DATABASES = {
 
-    'default': {
+        'default': {
 
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get("DATABASE"),
-        'USER': os.environ.get("USER"),
-        'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
-        'HOST': os.environ.get('HOST'),
-        'PORT': '5432',
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': os.environ.get("DATABASE"),
+            'USER': os.environ.get("USER"),
+            'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
+            'HOST': os.environ.get('HOST'),
+            'PORT': '5432',
+
+        }
 
     }
 
-}
+
+
 
 
 
