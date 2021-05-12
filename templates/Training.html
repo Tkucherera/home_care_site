@@ -1,4 +1,5 @@
 {% load static %}
+{% static "media" as baseUrl %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -99,7 +100,7 @@
     </div>
     <!--Modal: Name-->
 
-    <a><img class="img-fluid z-depth-1"  style="cursor:pointer;height:200px;width:100%" src="media/{{video.img}}" alt="video"
+    <a><img class="img-fluid z-depth-1"  style="cursor:pointer;height:200px;width:100%" src="{{video.img.url}}" alt="video"
         data-toggle="modal" data-target="#modal{{video.pk}}">
         <div class="modal-footer justify-content-center">
             <span class="mr-4">Lesson 1</span>

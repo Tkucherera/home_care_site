@@ -30,7 +30,7 @@ class TrainingVideo(models.Model):
     name = models.CharField(max_length=200)
     topic = models.CharField(max_length=100, help_text='if no topic put N/A')
     duration = models.IntegerField(help_text='input time takes to complete training in mins')
-    img = models.ImageField(upload_to='media/')
+    img = models.ImageField(upload_to='images/')
     video_link = models.CharField(max_length=300, help_text='enter link to youtube video')
 
     def __str__(self):
@@ -41,7 +41,7 @@ class TrainingPpt(models.Model):
     name = models.CharField(max_length=200)
     topic = models.CharField(max_length=100, help_text='if no topic put N/A')
     duration = models.IntegerField(help_text='input time takes to complete training in mins')
-    img = models.ImageField(upload_to='media/')
+    img = models.ImageField(upload_to='images/')
     ppt = models.CharField(max_length=300, help_text='enter link to ppt in Onedrive')
 
     def __str__(self):
@@ -64,7 +64,7 @@ class HomeSlides(models.Model):
     name = models.CharField(max_length=100)
     header_description = models.TextField(help_text='enter the heading text for caption')
     body_description = models.TextField(help_text='enter the summary description')
-    image = models.ImageField(upload_to='media/')
+    image = models.ImageField(upload_to='images/')
 
     def __str__(self):
         return self.name

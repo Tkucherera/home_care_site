@@ -82,32 +82,26 @@ DATABASES = {
 
     'default': {
 
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get('DATABASE_NAME'),
-        'USER': os.environ.get('HEROKU_POSTGRES_USER'),
-        'PASSWORD': os.environ.get('POSTGRES_PASS'),
-        'HOST': os.environ.get('HEROKU_HOST'),
-        'PORT': '5432',
-
-    }
-
+       'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'homecare',
+       'USER': 'postgres',
+       'PASSWORD': "Tinashe",
+       'HOST': 'localhost',
+  }
 }
+
+
+
+
 
 
 
 import dj_database_url
 
-DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
+#DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
 
-#'default': {
 
-#        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#        'NAME': os.environ.get('DATABASE_NAME_HOMECARE'),
- #       'USER': os.environ.get('HEROKU_POSTGRES_USER_HOMECARE'),
-#        'PASSWORD': os.environ.get('POSTGRES_PASS_HOMECARE'),
- #       'HOST': os.environ.get('HEROKU_HOST_HOMECARE'),
- ##  }
 
 
 # Password validation
@@ -145,32 +139,28 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images, videos )
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
+
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'), ]
-STATIC_URL ='/static/'
-#STATIC_ROOT = os.path.join(BASE_DIR, 'assets')
-
-
-
-
+STATIC_URL = '/static/'
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+USE_S3 = 'True'
+
 
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID_HOMECARE')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_KEY_ID_HOMECARE')
 AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME_HOMECARE')
-AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
-AWS_LOCATION = 'media'
 
-MEDIA_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
 
-AWS_S3_FILE_OVERWRITE = False   #so that uploads with the same name are not overwritten
+AWS_S3_FILE_OVERWRITE = False   # so that uploads with the same name are not overwritten
 AWS_DEFAULT_ACL = None
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-#STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
+
 
 django_heroku.settings(locals())
