@@ -82,17 +82,16 @@ DATABASES = {
 
     'default': {
 
-       'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'homecare',
-       'USER': 'postgres',
-       'PASSWORD': "Tinashe",
-       'HOST': 'localhost',
-  }
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': "d2bhsn06rf8ed9",
+        'USER': "ngcszlehdnmdvl",
+        'PASSWORD': "ea294bde023fe0d38582776e3aa0047f70a24557832ff6de6d90114efe9a51d6",
+        'HOST': "ec2-18-215-111-67.compute-1.amazonaws.com",
+        'PORT': '5432',
+
+    }
+
 }
-
-
-
-
 
 
 
@@ -101,7 +100,14 @@ import dj_database_url
 #DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
 
+#'default': {
 
+#        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#        'NAME': os.environ.get('DATABASE_NAME_HOMECARE'),
+#       'USER': os.environ.get('HEROKU_POSTGRES_USER_HOMECARE'),
+#        'PASSWORD': os.environ.get('POSTGRES_PASS_HOMECARE'),
+#       'HOST': os.environ.get('HEROKU_HOST_HOMECARE'),
+##  }
 
 
 # Password validation
