@@ -1,16 +1,26 @@
 from django.db import models
 from django.contrib.auth.models import User
+
 # Create your models here.
 
 
+class Module(models.Model):
+    name = models.CharField(max_length=200)
+    module_number = models.IntegerField(help_text='enter the number of module')
+
+    def __str__(self):
+        return self.name
+
+
 class Test(models.Model):
+    module = models.ForeignKey(Module, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     attempts = models.IntegerField(help_text='set the value to 0.') # this value will auto increase with each each user who take test
     Difficulty = models.CharField(max_length=100, help_text='options are: easy, medium, difficult,N/A')
     num_questions = models.IntegerField(help_text='enter the number of questions')
 
     def __str__(self):
-        return self.name
+        return f" module: {self.module.module_number} {self.name}"
 
 
 class Question(models.Model):
@@ -23,10 +33,11 @@ class Question(models.Model):
     correct_answer = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.question
+        return f" module: {self.test.module.module_number} test: {self.test.name} {self.question}"
 
 
 class TrainingVideo(models.Model):
+    module = models.ForeignKey(Module, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
     topic = models.CharField(max_length=100, help_text='if no topic put N/A')
     duration = models.IntegerField(help_text='input time takes to complete training in mins')
@@ -48,16 +59,23 @@ class TrainingPpt(models.Model):
         return self.name
 
 
-class UserInfo(models.Model):
+class TestComplete(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    pretest_completion = models.BooleanField(default=False)
-    pretest_grade = models.IntegerField(blank=True, null=True, help_text='this grade is presented as percentage')
-    postest_completion = models.BooleanField(default=False)
-    training_completion = models.BooleanField(default=False)
-    postest_grade = models.IntegerField(blank=True, null=True, help_text='this grade is presented as percentage')
+    module = models.ForeignKey(Module, on_delete=models.CASCADE)
+    test = models.ForeignKey(Test, on_delete=models.CASCADE)
+    test_grade = models.IntegerField(null=True, blank=True)
+    test_completion = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.user.last_name
+        return f"{self.user.last_name} test: {self.test.pk}"
+
+
+class CourseCompletion(models.Model):
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    modules = models.ManyToManyField(Module)
+
+    def __str__(self):
+        return self.owner.username
 
 
 class HomeSlides(models.Model):
@@ -68,4 +86,8 @@ class HomeSlides(models.Model):
 
     def __str__(self):
         return self.name
+
+
+
+
 

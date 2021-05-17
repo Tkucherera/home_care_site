@@ -24,7 +24,7 @@
       </li>
       {% if user.is_authenticated %}
         <li class="nav-item active">
-            <a class="nav-link" style="color:black;" href="{% url 'test' %}">Tests</a>
+            <a class="nav-link" style="color:black;" href="{% url 'training' %}">Training</a>
         </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle"  style="color:black;" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -60,64 +60,84 @@
 <section>
     <div style="width:80%;margin: 0 auto;">
         <div>
-            <h1 style="text-align:center;margin-bottom:20px;margin-top:50px;"> Training videos </h1>
-        </div>
+                {% if tests %}
+                    <h1 style="text-align:center;margin-bottom:20px;margin-top:50px;"> {{tests.1.module.name}} </h1>
+                    <div class="row">
+                         <!-- Grid column -->
+                        {% for test in tests%}
+                        <div class="col-lg-4 col-md-12 mb-4">
+                            <form action="{% url 'test' %}" method="get">
+                                <button type="submit" name="pk" value="{{test.pk}}" class="btn btn-outline-primary btn-rounded btn-md ml-4">
+                                    {{test.name}}</button>
+                            </form>
 
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+</div>
+        <div>
+            <h1 style="text-align:center;margin-bottom:20px;margin-top:50px;"> Modules </h1>
+        </div>
 
 <!-- Grid row -->
-<div class="row">
-    {% for video in videos %}
-  <!-- Grid column -->
-  <div class="col-lg-4 col-md-12 mb-4">
+        <div class="row">
+            {% for module in modules %}
+          <!-- Grid column -->
+          <div class="col-lg-4 col-md-12 mb-4">
 
-    <!--Modal: Name-->
-    <div class="modal fade" id="modal{{video.pk}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-lg" role="document">
+            <!--Modal: Name-->
+            <div class="modal fade" id="modal{{module.pk}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-lg" role="document">
 
-        <!--Content-->
-        <div class="modal-content">
+                <!--Content-->
+                <div class="modal-content">
 
-          <!--Body "https://www.youtube.com/embed/A3PDXmYoF5U"-->
-          <div class="modal-body mb-0 p-0">
+                  <!--Body "https://www.youtube.com/embed/A3PDXmYoF5U"-->
+                  <div class="modal-body mb-0 p-0">
 
-            <div class="embed-responsive embed-responsive-16by9 z-depth-1-half">
-              <iframe class="embed-responsive-item" src="{{video.video_link}}"
-                allowfullscreen></iframe>
+                    <div class="embed-responsive embed-responsive-16by9 z-depth-1-half">
+                      <iframe class="embed-responsive-item" src="{{video.video_link}}"
+                        allowfullscreen></iframe>
+                    </div>
+
+                  </div>
+
+                  <!--Footer-->
+                  <div class="modal-footer justify-content-center">
+                   <form action="{% url 'test' %}" method="get">
+                    <button type="submit" name="pk" value="{{test.1.pk}}" class="btn btn-outline-primary btn-rounded btn-md ml-4">Pre-Test</button>
+                    <button type="submit" name="pk" value="{{test.2.pk}}" class="btn btn-outline-primary btn-rounded btn-md ml-4">Training</button>
+                    <button type="submit" name="pk" value="{{test.pk}}" class="btn btn-outline-primary btn-rounded btn-md ml-4">Post-Test</button>
+                   </form>
+                    <button type="button" class="btn btn-outline-primary btn-rounded btn-md ml-4" data-dismiss="modal">Close</button>
+                  </div>
+
+                </div>
+                <!--/.Content-->
+
+              </div>
             </div>
+            <!--Modal: Name-->
+
+            <a><img class="img-fluid z-depth-1"  style="cursor:pointer;height:200px;width:100%" src="{{video.img.url}}" alt="video"
+                data-toggle="modal" data-target="#modal{{module.pk}}">
+                <div class="modal-footer justify-content-center">
+                    <span class="mr-4">{{module.name}}</span>
+                  <form action="{% url 'training' %}" method="get">
+                    <button type="submit" class="btn btn-outline-primary btn-rounded btn-md ml-4" value="{{module.pk}}" name="module" data-toggle="modal" data-target="#modal{{module.pk}}">Select</button>
+                  </form>
+                </div>
+            </a>
 
           </div>
+            {% endfor %}
 
-          <!--Footer-->
-          <div class="modal-footer justify-content-center">
-            <span class="mr-4">Spread the word!</span>
-            <button type="button" class="btn btn-outline-primary btn-rounded btn-md ml-4" data-dismiss="modal">Close</button>
-          </div>
 
         </div>
-        <!--/.Content-->
-
-      </div>
-    </div>
-    <!--Modal: Name-->
-
-    <a><img class="img-fluid z-depth-1"  style="cursor:pointer;height:200px;width:100%" src="{{video.img.url}}" alt="video"
-        data-toggle="modal" data-target="#modal{{video.pk}}">
-        <div class="modal-footer justify-content-center">
-            <span class="mr-4">Lesson 1</span>
-            <button type="button" class="btn btn-outline-primary btn-rounded btn-md ml-4" data-toggle="modal" data-target="#modal{{video.pk}}">watch video</button>
-        </div>
-    </a>
-
-  </div>
-    {% endfor %}
 
 
-</div>
-
-<div>
-    <h1 style="text-align:center;margin-bottom:20px;margin-top:50px;"> Training Powerpoint </h1>
-</div>
-    <!-- POWERPOINTS -->
 
 
     </div>

@@ -10,24 +10,30 @@ def index(request):
     slides = HomeSlides.objects.all()
     # also create new user in userinfo table
     user_id = request.user.id
-    if user_id:
+    '''if user_id:
         # save new user
-        if UserInfo.objects.filter(user_id=user_id).exists():
-            stats = get_userinfo(user_id)
-
+        if TestComplete.objects.filter(user_id=user_id).exists():
+            #stats = get_userinfo(user_id)
+            stats = 0
             return render(request, 'index.html', {'stats': stats, 'slides': slides})
 
         else:
-            user_info = UserInfo(user_id=user_id)
+            user_info = TestComplete.objrctt(user_id=user_id)
             user_info.save()
             print(' new user saved!')
             try:
-                stats = get_userinfo(user_id)
+                #stats = get_userinfo(user_id)
+                stats = 0
                 return render(request, 'index.html', {'stats': stats, 'slides': slides})
             except'Internal Server Error':
-                return render(request, 'index.html')
+                return render(request, 'index.html')'''
 
     return render(request, 'index.html', {'slides': slides})
+
+
+def module(request):
+    modules = Module.objects.all()
+    return render(request, 'modules.html', {'module': modules})
 
 
 def test(request):
@@ -68,7 +74,8 @@ def test(request):
         test_id = request.POST['test_submit']
         questions = Question.objects.all().filter(test_id=test_id)
         correct_answers = []
-
+        # get the module_id
+        module_id = Test.objects.get(pk=test_id).module.id
         score = 0
         print('checking answers...')
         n = 1
@@ -81,12 +88,14 @@ def test(request):
 
         # start working to update
         user_id = request.user.id
-        update = update_db(results, test_id, user_id)
+        update = update_db(results, test_id, user_id, module_id)
 
         # if the user has passed post test print certificate
         print(update)
 
-        return render(request, 'Tests.html', {'score': results})
+        # Check if course if completed
+        completed = check_modules(user_id)
+        return render(request, 'Tests.html', {'score': results, 'completed': completed})
 
             # TODO refine the code
 
@@ -94,14 +103,20 @@ def test(request):
 
 
 def training(request):
+    modules = Module.objects.all()
     videos = TrainingVideo.objects.all()
+    if request.method == 'GET':
+        module = request.GET.get('module')
+        required_test = Test.objects.filter(module_id=module)
+        return render(request, 'Training.html', {'modules': modules, 'tests': required_test})
+    return render(request, 'Training.html', {'modules': modules})
 
-    return render(request, 'Training.html', {'videos': videos})
 
-
-def get_userinfo(pk):  # grab users information from user_info table
-    if UserInfo.objects.get(user_id=pk):
-        user_information = UserInfo.objects.get(user_id=pk)
+'''def get_userinfo(pk):  # grab users information from user_info table
+    if TestCompletion.objects.get(user_id=pk):
+        user_information = TestCompletion.objects.get(user_id=pk)
+        counter = 1:
+        for pretest_completion in user_information:
         pretest_completion = {'completion': 'Take Test', 'color': 'red'}
         postest_completion = {'completion': 'Take Test', 'color': 'red'}
         training_completion = {'completion': 'Train', 'color': 'red'}
@@ -125,7 +140,7 @@ def get_userinfo(pk):  # grab users information from user_info table
         }
 
         return stats
-    return None
+    return None'''
 
 
 def calculate_percentage(score, num_questions, test_id):
@@ -161,16 +176,24 @@ def calculate_percentage(score, num_questions, test_id):
     return user_score
 
 
-def update_db(score, test_name, user_id):  # this function will update the db
+def update_db(score, test_id, user_id, module_id):  # this function will update the db
     percentage = score['percentage']
-    if test_name == '2':
-        UserInfo.objects.filter(user_id=user_id).update(postest_grade=percentage, postest_completion=True)
+    if TestComplete.objects.filter(user_id=user_id, test_id=test_id).exists():
+        TestComplete.objects.filter(user_id=user_id, test_id=test_id).update(test_grade=percentage, module_id=module_id)
+        # check if user has passed
+        if score['grade'] == 'pass':
+            TestComplete.objects.filter(user_id=user_id, test_id=test_id).update(test_completion=True)
+            # update module if passed
+            update = module_completion(user_id, module_id)
 
-        return 'updated post-test'
     else:
-        UserInfo.objects.filter(user_id=user_id).update(pretest_completion=True, pretest_grade=percentage)
+        TestComplete.objects.create(user_id=user_id, test_id=test_id, test_grade=percentage, module_id=module_id)
+        if score['grade'] == 'pass':
+            TestComplete.objects.filter(user_id=user_id, test_id=test_id, test_grade=percentage).update(test_completion=True)
+            # update module if passed
+            update = module_completion(user_id, module_id)
 
-        return 'updated pre-test'
+    return 'test'
 
 
 def certificate(request):
@@ -181,5 +204,41 @@ def certificate(request):
         fullname = request.user.get_full_name
         date = datetime.date.today()
 
-        return render(request, 'certificate.html', {'fullname': fullname, 'date': date, 'score': score} )
+        return render(request, 'certificate.html', {'fullname': fullname, 'date': date, 'score': score})
+
+
+def module_completion(user_id, module_id):
+    # get all module
+    module_taken = Module.objects.get(id=module_id)
+    tests = TestComplete.objects.filter(user_id=user_id, module_id=module_id)
+    if CourseCompletion.objects.filter(owner_id=user_id).exists():
+        # get the completed tests
+        if len(tests) == 2:
+            cs = CourseCompletion.objects.get(owner_id=user_id)
+            cs.modules.add(module_taken)
+            print('the leght of len tests is:', len(tests))
+
+    else:
+        CourseCompletion.objects.create(owner_id=user_id)
+        if len(tests) == 2:
+            cs = CourseCompletion.objects.get(owner_id=user_id)
+            cs.modules.add(module_taken)
+        print('the leght of len tests is:', len(tests))
+
+
+    return 'updates run...'
+    # after both pre and post test are done, module is added to couser completion
+
+
+def check_modules(user_id):
+    completion = CourseCompletion.objects.get(owner_id=user_id)
+    num_completed = completion.modules.count()
+    if num_completed >= 2:
+        return_val = 'complete'
+        return return_val
+    else:
+        return_val = 'False'
+        return return_val
+
+
 

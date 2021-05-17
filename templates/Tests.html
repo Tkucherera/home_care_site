@@ -82,7 +82,7 @@
                     <div>You got {{ score.score}}  out of {{score.num_questions}} questions right</div><br><br>
                     <div style="color:{{score.color}};">The score as percentage is:<b> {{ score.percentage}}%</b></div><br><br>
                     <div>{{score.message}}</div><hr>
-                    {% if score.grade == 'pass' and score.test == '2' %}
+                    {% if score.grade == 'pass' and completed == 'complete' %}
                     <div style="margin-top:10px;align:center;">
                         <form action="{% url 'certificate' %}" method="post">
                             {% csrf_token %}
@@ -97,7 +97,7 @@
                     </div>
                     {% else %}
                         <a href="{% url 'training'%}">
-                            <button type="submit" class="btn btn-outline-primary btn-rounded btn-md ml-4" }>start training</button>
+                            <button type="submit" class="btn btn-outline-primary btn-rounded btn-md ml-4" }>Go to Modules</button>
                         </a>
 
                     {% endif %}

@@ -84,20 +84,15 @@ DATABASES = {
         'default': {
 
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': os.environ.get("DATABASE_NAME"),
-            'USER': os.environ.get("USER"),
-            'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
-            'HOST': os.environ.get('HOST'),
+            'NAME': 'local_homecare',
+            'USER': "postgres",
+            'PASSWORD': 'Tinashe',
+            'HOST': "localhost",
             'PORT': '5432',
 
         }
 
     }
-
-
-
-
-
 
 import dj_database_url
 
