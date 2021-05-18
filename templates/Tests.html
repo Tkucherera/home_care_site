@@ -5,65 +5,49 @@
 {% block content %}
 {% if user.is_authenticated %}
 {% if not pk and not score %}
-        <div id="container">
-            <h1 style="text-align:center"> Choose test!</h1><hr>
-            <button type="button" class="start" data-toggle="modal" data-target="#pretestModal">PRE-TEST</button>
-            <!-- Modal -->
-                  <div class="modal fade" id="pretestModal" role="dialog">
-                    <div class="modal-dialog">
+        <!-- SHOW A LIST OF ALL THE TESTS -->
+        <div class="container">
+            {% for test in tests %}
+                <div>
+                    <h3>{{ test.module.name }}: {{test.name}}</h3><br>
+                    <!-- Trigger the modal with a button -->
+                        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal{{test.pk}}">Select</button>
+                            <!-- Modal -->
+                              <div class="modal fade" id="myModal{{test.pk}}" role="dialog">
+                                <div class="modal-dialog">
 
-                      <!-- Modal content-->
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <button type="button" class="close" data-dismiss="modal">&times;</button>
-                          <h4 class="modal-title">Pre-Test</h4>
-                        </div>
-                        <div class="modal-body" style="margin-left:40px;">
-                            <p style="font-size:20px;">Are you sure you want to take {{test.0.name}}</p>
-                            <ol>
-                              <li>The difficulty level is: <b>{{ test.0.Difficulty}}</b></li><br>
-                              <li>There are <b>{{ test.0.num_questions}} questions</b></li>
-                            </ol>
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <!-- form that will send info to test view -->
-                          <form action="{% url 'test' %}" method="get">
-                            <button type="submit" class="btn btn-default" name="pk" value="1">Start Test</button>
-                          </form>
-                        </div>
-                      </div>
+                                  <!-- Modal content-->
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                      <h4 class="modal-title">{{ test.module.name }}: {{test.name}}</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                      <p>The difficulty is: {{test.Difficulty}}</p>
+                                      <p>There are {{test.num_questions}} questions in this test </p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <div class="row">
+                                            <div class="col-xs-6">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            </div>
+                                            <div class="col-xs-6">
+                                                <form action="{% url 'test' %}" method='get'>
+                                                    <button type="submit" name="pk" value="{{test.pk}}" class="btn btn-primary">take {{test.name}}</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                  </div>
 
-                    </div>
-                  </div>
-            <button type="button" class="start" data-toggle="modal" data-target="#postestModal">POST-TEST</button>
-                <!-- Modal -->
-                  <div class="modal fade" id="postestModal" role="dialog">
-                    <div class="modal-dialog">
+                                </div>
+                              </div>
 
-                      <!-- Modal content-->
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <button type="button" class="close" data-dismiss="modal">&times;</button>
-                          <h4 class="modal-title">Post-Test</h4>
-                        </div>
-                        <div class="modal-body" style="margin-left:40px;">
-                          <p style="font-size:20px;">Are you sure you want to take {{test.1.name}}</p>
-                            <ol>
-                              <li>The difficulty level is: <b>{{ test.1.Difficulty}}</b></li><br>
-                              <li>There are <b>{{ test.1.num_questions}} questions</b></li>
-                            </ol>
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                          <form action="{% url 'test' %}" method="get">
-                            <button type="submit" class="btn btn-default" name="pk" value="2">Start Test</button>
-                          </form>
-                        </div>
-                      </div>
 
-                    </div>
-                  </div>
+                </div>
+                <hr>
+            {% endfor %}
+
         </div>
 {% endif%}
 
@@ -109,12 +93,8 @@
 
 <div class="container">
     <!-- Put the test name-->
-    {% if pk == '1' %}
-        <h1 style="text-align:center">Pre-test</h1>
-    {% elif pk == '2' %}
-        <h1 style="text-align:center">Post-test</h1>
-    {% else %}
-        <h1 style="text-align:center">Your Test will be below here</h1>
+    {% if pk %}
+        <h1 style="text-align:center">{{ test.module.name }}: {{test.name}}</h1>
     {% endif %}
     <form action="{% url 'test' %}" method="post">
         {% csrf_token %}

@@ -33,6 +33,7 @@ hr{
     position: relative;
 }
 
+
 .img-circle {
   width: 150px;
   height: 150px;
@@ -48,6 +49,20 @@ hr{
   margin-left:10px;
   text-align: center;
   background: lightgrey;
+}
+
+#myProgress {
+  width: 60%;
+  background-color: #ddd;
+  margin: 0 auto auto;
+}
+
+#myBar {
+  height: 30px;
+  background-color: #04AA6D;
+  text-align: center;
+  line-height: 30px;
+  color: white;
 }
 
 .score-circle {

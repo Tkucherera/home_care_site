@@ -9,24 +9,6 @@ import json
 def index(request):
     slides = HomeSlides.objects.all()
     # also create new user in userinfo table
-    user_id = request.user.id
-    '''if user_id:
-        # save new user
-        if TestComplete.objects.filter(user_id=user_id).exists():
-            #stats = get_userinfo(user_id)
-            stats = 0
-            return render(request, 'index.html', {'stats': stats, 'slides': slides})
-
-        else:
-            user_info = TestComplete.objrctt(user_id=user_id)
-            user_info.save()
-            print(' new user saved!')
-            try:
-                #stats = get_userinfo(user_id)
-                stats = 0
-                return render(request, 'index.html', {'stats': stats, 'slides': slides})
-            except'Internal Server Error':
-                return render(request, 'index.html')'''
 
     return render(request, 'index.html', {'slides': slides})
 
@@ -46,6 +28,7 @@ def test(request):
         required_test = request.GET.get('pk')
         print('Required test: ', required_test)
         if required_test is not None:
+            req_test = Test.objects.get(id=required_test)
             questions = Question.objects.all().filter(test_id=required_test)
             # assign unique identifier to each answer
             json_q = []
@@ -67,7 +50,7 @@ def test(request):
                 counter += 1
                 json_q.append(data_input)
 
-            return render(request, 'Tests.html', {'questions': json_q, 'pk': required_test})
+            return render(request, 'Tests.html', {'questions': json_q, 'pk': required_test, 'test':req_test})
 
     if request.method == 'POST':
         # first get the correct answers
@@ -99,17 +82,30 @@ def test(request):
 
             # TODO refine the code
 
-    return render(request, 'Tests.html', {'test': tests})
+    return render(request, 'Tests.html', {'tests': tests})
 
 
 def training(request):
     modules = Module.objects.all()
     videos = TrainingVideo.objects.all()
+    user_id = request.user.id
     if request.method == 'GET':
-        module = request.GET.get('module')
+        try:
+            completed = ((TestComplete.objects.filter(user_id=user_id, test_completion=True).count()) / 16) * 100
+            print(' the percentage is ', completed)
+            return render(request, 'Training.html', {'modules': modules, 'completed': completed})
+        except user_id.DoesNotExist:
+            completed = False
+
+    if request.method == 'POST':
+        module = request.POST['module']
         required_test = Test.objects.filter(module_id=module)
+        completed = False
         return render(request, 'Training.html', {'modules': modules, 'tests': required_test})
-    return render(request, 'Training.html', {'modules': modules})
+
+    return render(request, 'Training.html', {'modules': modules, 'completed': completed})
+
+        # see how many tests of 16 are complete
 
 
 '''def get_userinfo(pk):  # grab users information from user_info table
@@ -225,20 +221,22 @@ def module_completion(user_id, module_id):
             cs.modules.add(module_taken)
         print('the leght of len tests is:', len(tests))
 
-
     return 'updates run...'
     # after both pre and post test are done, module is added to couser completion
 
 
 def check_modules(user_id):
-    completion = CourseCompletion.objects.get(owner_id=user_id)
-    num_completed = completion.modules.count()
-    if num_completed >= 2:
-        return_val = 'complete'
-        return return_val
-    else:
-        return_val = 'False'
-        return return_val
+    try:
+        completion = CourseCompletion.objects.get(owner_id=user_id)
+        num_completed = completion.modules.count()
+        if num_completed >= 2:
+            return_val = 'complete'
+            return return_val
+        else:
+            return_val = 'False'
+            return return_val
+    except CourseCompletion.DoesNotExist:
+        pass
 
 
 
