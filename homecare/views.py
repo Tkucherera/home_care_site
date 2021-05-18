@@ -20,7 +20,7 @@ def module(request):
 
 def test(request):
     # get the tests
-    tests = Test.objects.all()
+    tests = Tests.objects.all()
     # get the questions
     # get the test id that the user selected
 
@@ -28,7 +28,7 @@ def test(request):
         required_test = request.GET.get('pk')
         print('Required test: ', required_test)
         if required_test is not None:
-            req_test = Test.objects.get(id=required_test)
+            req_test = Tests.objects.get(id=required_test)
             questions = Question.objects.all().filter(test_id=required_test)
             # assign unique identifier to each answer
             json_q = []
@@ -58,7 +58,7 @@ def test(request):
         questions = Question.objects.all().filter(test_id=test_id)
         correct_answers = []
         # get the module_id
-        module_id = Test.objects.get(pk=test_id).module.id
+        module_id = Tests.objects.get(pk=test_id).module.id
         score = 0
         print('checking answers...')
         n = 1
@@ -87,7 +87,7 @@ def test(request):
 
 def training(request):
     modules = Module.objects.all()
-    videos = TrainingVideo.objects.all()
+    videos = TrainingVideos.objects.all()
     user_id = request.user.id
     if request.method == 'GET':
         try:
@@ -99,7 +99,7 @@ def training(request):
 
     if request.method == 'POST':
         module = request.POST['module']
-        required_test = Test.objects.filter(module_id=module)
+        required_test = Tests.objects.filter(module_id=module)
         completed = False
         return render(request, 'Training.html', {'modules': modules, 'tests': required_test})
 

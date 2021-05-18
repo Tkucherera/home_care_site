@@ -12,7 +12,7 @@ class Module(models.Model):
         return self.name
 
 
-class Test(models.Model):
+class Tests(models.Model):
     module = models.ForeignKey(Module, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     attempts = models.IntegerField(help_text='set the value to 0.') # this value will auto increase with each each user who take test
@@ -22,9 +22,12 @@ class Test(models.Model):
     def __str__(self):
         return f" module: {self.module.module_number} {self.name}"
 
+    class Meta:
+        verbose_name_plural = "Tests"
+
 
 class Question(models.Model):
-    test = models.ForeignKey(Test, on_delete=models.CASCADE)
+    test = models.ForeignKey(Tests, on_delete=models.CASCADE)
     question = models.TextField(help_text="enter the question here")
     optionA = models.CharField(max_length=100)
     optionB = models.CharField(max_length=100)
@@ -36,7 +39,7 @@ class Question(models.Model):
         return f" module: {self.test.module.module_number} test: {self.test.name} {self.question}"
 
 
-class TrainingVideo(models.Model):
+class TrainingVideos(models.Model):
     module = models.ForeignKey(Module, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
     topic = models.CharField(max_length=100, help_text='if no topic put N/A')
@@ -46,6 +49,9 @@ class TrainingVideo(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name_plural = "TrainingVideos"
 
 
 class TrainingPpt(models.Model):
@@ -62,7 +68,7 @@ class TrainingPpt(models.Model):
 class TestComplete(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     module = models.ForeignKey(Module, on_delete=models.CASCADE)
-    test = models.ForeignKey(Test, on_delete=models.CASCADE)
+    test = models.ForeignKey(Tests, on_delete=models.CASCADE)
     test_grade = models.IntegerField(null=True, blank=True)
     test_completion = models.BooleanField(default=False)
 
