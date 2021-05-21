@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-{% static "media" as baseUrl %}
+<!--{% static "media" as baseUrl %}-->
 <!-- start of page -->
 {% block content %}
 
@@ -19,7 +19,7 @@
       {% for slide in slides %}
       {% if slide.name == 'home_health' %}
         <div class="item active">
-            <img style="width:100%;" src="media/{{slide.image.url}}" alt="{{slide.name}}">
+            <img style="width:100%;" src="{{slide.image.url}}" alt="{{slide.name}}">
                 <div class="carousel-caption">
                     <h3>{{ slide.header_description}}</h3>
                     <p>{{slide.body_description}}</p>
@@ -27,7 +27,7 @@
         </div>
       {% else %}
         <div class="item ">
-            <img style="width:100%;" src="media/{{slide.image.url}}" alt="{{slide.name}}">
+            <img style="width:100%;" src="{{slide.image.url}}" alt="{{slide.name}}">
                 <div class="carousel-caption">
                     <h3>{{ slide.header_description}}</h3>
                     <p>{{slide.body_description}}</p>
