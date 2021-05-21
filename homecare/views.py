@@ -56,13 +56,14 @@ def test(request):
         # first get the correct answers
         test_id = request.POST['test_submit']
         questions = Question.objects.all().filter(test_id=test_id)
-        correct_answers = []
+        user_answers = []
         # get the module_id
         module_id = Tests.objects.get(pk=test_id).module.id
         score = 0
         print('checking answers...')
         n = 1
         for question in questions:
+            user_answers.append(request.POST[f"question{n}"])
             if request.POST[f"question{n}"] == question.correct_answer:
                 score += 1
             n += 1
@@ -71,7 +72,7 @@ def test(request):
 
         # start working to update
         user_id = request.user.id
-        update = update_db(results, test_id, user_id, module_id)
+        update = update_db(results, test_id, user_id, module_id, user_answers)
 
         # if the user has passed post test print certificate
         print(update)
@@ -108,37 +109,6 @@ def training(request):
         # see how many tests of 16 are complete
 
 
-'''def get_userinfo(pk):  # grab users information from user_info table
-    if TestCompletion.objects.get(user_id=pk):
-        user_information = TestCompletion.objects.get(user_id=pk)
-        counter = 1:
-        for pretest_completion in user_information:
-        pretest_completion = {'completion': 'Take Test', 'color': 'red'}
-        postest_completion = {'completion': 'Take Test', 'color': 'red'}
-        training_completion = {'completion': 'Train', 'color': 'red'}
-        if user_information.pretest_completion:
-            pretest_completion['completion'] = 'Complete'
-            pretest_completion['color'] = 'green'
-
-        if user_information.postest_completion:
-            postest_completion['completion'] = 'Complete'
-            postest_completion['color'] = 'green'
-            print('color changed to green')
-
-        if user_information.training_completion:
-            training_completion['color'] = 'green'
-            training_completion['completion'] = 'Complete'
-
-        stats = {
-            'pretest_completion': pretest_completion,
-            'postest_completion': postest_completion,
-            'training_completion': training_completion
-        }
-
-        return stats
-    return None'''
-
-
 def calculate_percentage(score, num_questions, test_id):
     percentage = round((score/num_questions)*100, 0)
     # parse percentage to get suggestion
@@ -172,10 +142,10 @@ def calculate_percentage(score, num_questions, test_id):
     return user_score
 
 
-def update_db(score, test_id, user_id, module_id):  # this function will update the db
+def update_db(score, test_id, user_id, module_id, user_answers):  # this function will update the db
     percentage = score['percentage']
     if TestComplete.objects.filter(user_id=user_id, test_id=test_id).exists():
-        TestComplete.objects.filter(user_id=user_id, test_id=test_id).update(test_grade=percentage, module_id=module_id)
+        TestComplete.objects.filter(user_id=user_id, test_id=test_id).update(test_grade=percentage, module_id=module_id, user_answers=user_answers)
         # check if user has passed
         if score['grade'] == 'pass':
             TestComplete.objects.filter(user_id=user_id, test_id=test_id).update(test_completion=True)
@@ -183,7 +153,7 @@ def update_db(score, test_id, user_id, module_id):  # this function will update 
             update = module_completion(user_id, module_id)
 
     else:
-        TestComplete.objects.create(user_id=user_id, test_id=test_id, test_grade=percentage, module_id=module_id)
+        TestComplete.objects.create(user_id=user_id, test_id=test_id, test_grade=percentage, module_id=module_id, user_answers=user_answers)
         if score['grade'] == 'pass':
             TestComplete.objects.filter(user_id=user_id, test_id=test_id, test_grade=percentage).update(test_completion=True)
             # update module if passed
@@ -229,7 +199,9 @@ def check_modules(user_id):
     try:
         completion = CourseCompletion.objects.get(owner_id=user_id)
         num_completed = completion.modules.count()
-        if num_completed >= 2:
+        if num_completed >= 2:          # remember to change this to 8
+           # completion.complete = True
+            #completion.save()
             return_val = 'complete'
             return return_val
         else:
@@ -239,4 +211,59 @@ def check_modules(user_id):
         pass
 
 
+def portal(request):
+    # GET ALL USERS WHO HAVE COMPLETED COURSE
+    completed_users = CourseCompletion.objects.filter(complete=True)
+    # GET ALL USERS WHO ARE IN PROGRESS
+    in_progress_users = CourseCompletion.objects.filter(complete=False)
+    if request.method == 'GET':
+        val = request.GET.get('needed_val')
+        if val == 'completed_users':
+            return render(request, 'administrator.html', {'completed_users': completed_users})
 
+        elif val == 'in_progress_users':
+            return render(request, 'administrator.html', {'in_progress_users': in_progress_users})
+
+        else:
+            questions = Question.objects.all()
+            tests = Tests.objects.all()
+            tests_complete = TestComplete.objects.filter(user_id=val)
+            test_answers = render_answer_template(tests_complete)
+            if CourseCompletion.objects.filter(owner_id=val).exists():
+                if CourseCompletion.objects.get(owner_id=val).complete:
+                    completed = ((TestComplete.objects.filter(user_id=val, test_completion=True).count()) / 16) * 100
+                    return render(request, 'administrator.html', {'Tests': tests, 'Test_complete': tests_complete, 'completed': completed, 'test_answers': test_answers, 'questions': questions})
+                else:
+                    in_progress = completed = ((TestComplete.objects.filter(user_id=val, test_completion=True).count()) / 16) * 100
+                    return render(request, 'administrator.html', {'Tests': tests, 'in_progress': in_progress})
+
+    return render(request, 'administrator.html')
+
+
+def render_answer_template(tests):
+    test_answers = {}
+    for test in tests:
+        print(test.user_answers)
+        answers_list = create_answers_list(test.user_answers)
+        test_answers.update({test.test.pk: answers_list})
+    print(test_answers)
+    return test_answers
+
+
+def create_answers_list(val):
+    answers_list = []
+    t = val.strip("[]")
+    g = t.split(',')
+    for n in g:
+        v = n.strip("''")
+        answers_list.append(v)
+
+    return answers_list
+
+
+'''
+        1. get all users and put them in 3 groups completed, in-progress, not-started
+        2. for the completed it should contain all their exams and certificates downloadable
+        3. for in pogress it should just show their progress as percentage
+        4. not started just shows a list of name
+    '''

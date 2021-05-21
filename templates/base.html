@@ -63,8 +63,11 @@
       </ul>
         {% if user.is_authenticated %}
           <ul class="nav navbar-nav navbar-right">
-            <li><a style="color:black;" href="#">Welcome: {{user.username}}</a></li>
+            <li><a class="nav-link disabled" style="color:black;cursor:text" href="#">Welcome: {{user.username}}</a></li>
             <li><a style="color:black;" href="{% url 'logout' %}">Logout</a></li>
+              {% if request.user.is_staff %}
+                <li><a style="color:black;" href="{% url 'portal' %}">admin portal</a></li>
+              {% endif %}
           </ul>
         {% endif %}
     </div><!-- /.navbar-collapse -->

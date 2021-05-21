@@ -1,0 +1,263 @@
+{% load static %}
+{% static "media" as baseUrl %}
+
+
+
+<html lang="en">
+<head>
+  <title>Portal</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+
+  <style>
+    .myProgress {
+  width: 60%;
+  background-color: #ddd;
+  margin: 0 auto auto;
+}
+
+.myBar {
+  height: 30px;
+  background-color: #04AA6D;
+  text-align: center;
+  line-height: 30px;
+  color: white;
+}
+
+
+    /* Remove the navbar's default margin-bottom and rounded borders */
+    .navbar {
+      margin-bottom: 0;
+      border-radius: 0;
+    }
+
+    /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+    .row.content {height: 450px}
+
+    /* Set gray background color and 100% height */
+    .sidenav {
+      padding-top: 20px;
+      background-color: #f1f1f1;
+      height: 100%;
+    }
+
+    /* Set black background color, white text and some padding */
+    footer {
+      background-color: #555;
+      color: white;
+      padding: 15px;
+    }
+
+    /* On small screens, set height to 'auto' for sidenav and grid */
+    @media screen and (max-width: 767px) {
+      .sidenav {
+        height: auto;
+        padding: 15px;
+      }
+      .row.content {height:auto;}
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="{% url 'index' %}">A PLUS</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="{% url 'index' %}">Home</a></li>
+
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container-fluid text-center">
+  <div class="row content">
+    <div class="col-sm-2 sidenav">
+      <form action="{% url 'portal' %}" method='get'>
+        <li class="dropdown">
+          <a href="{% url 'training' %}" class="dropdown-toggle"  style="color:black;" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">User Groups <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><button type="submit" class="btn btn-link" name="needed_val" value="completed_users">Completed</button></li>
+                <li><button type="submit" class="btn btn-link" name="needed_val" value="in_progress_users">In progress</button></li>
+                <li><button type="submit" class="btn btn-link" name="needed_val" value="staff">Staff</button></li>
+              </ul>
+        </li>
+      </form>
+    </div>
+
+<!-- this section will content on the users -->
+    <div class="col-sm-8 text-left">
+      <h1>Welcome {{ user.username }}</h1>
+
+      <!-- SHOW ALL USERS WHO HAVE COMPLETED THE COURSE  -->
+      {% if completed_users %}
+        <h3>These people have completed all modules</h3>
+      <div class="row">
+        {% for user in completed_users %}
+        <div class="col-md-6">
+            {{user.owner.get_full_name}}
+        </div>
+        <div class="col-md-6">
+          <form action="{% url 'portal' %}" method='get'>
+            <button type="submit" name="needed_val" value="{{user.owner.id}}" class="btn btn-outline-primary btn-rounded btn-md ml-4">select</button>
+          </form>
+        </div>
+        <hr>
+        {% endfor %}
+      </div>
+
+      <!-- SHOW USER FOLDER IF SELECTED  -->
+      {% elif completed %}
+        <h1 align="center">{{ Test_complete.1.user.get_full_name}}'s Progress</h1>
+
+            <div class="myProgress">
+              <div class="myBar" style="width:{{completed}}%;">{{completed}}% complete</div>
+            </div>
+
+            <!-- SHOW THE CERTIFICATE -->
+              <div>
+              <!-- CERTIFICATE  -->
+              <div style="display:inline-block; margin-top:20px;">
+                <hr><input type="button"  style="margin-left:30px;" class="btn btn-outline-primary btn-rounded btn-md ml-4" onclick="printDiv('printableArea')" value="print certificate" />
+                <input type="button"  style="margin-left:30px;" class="btn btn-outline-primary btn-rounded btn-md ml-4" onclick="printDiv('printableTests')" value="print Tests" /> <hr>
+              </div>
+                <div id="printableArea" style="margin: 0 auto auto;padding: 5px;">
+                    <div style="width:900px; height:600px; padding:20px; text-align:center; border: 10px solid #787878">
+                        <div style="width:850px; height:550px; padding:20px; text-align:center; border: 5px solid #787878">
+                               <span style="font-size:50px; font-weight:bold">Certificate of Completion</span>
+                               <br><br>
+                               <span style="font-size:25px"><i>This is to certify that</i></span>
+                               <br><br>
+                               <span style="font-size:30px"><b>{{Test_complete.1.user.get_full_name}}</b></span><br/><br/>
+                               <span style="font-size:25px"><i>has completed the course</i></span> <br/><br/>
+                               <span style="font-size:30px"> <b> Home Patient Care </b> </span> <br/><br
+                               <span style="font-size:25px"><i>dated</i></span><br>
+                              {{date}}
+                              <span style="font-size:30px"></span>
+                        </div>
+                    </div>
+                </div>
+              </div>
+
+            <!-- SHOW TEST RESULTS HERE -->
+              <div id="printableTests">
+                <!-- Iterate through the tests and also print the questions -->
+                {% for test in Test_complete %}
+                <h1 style="text-align:center">{{ test.module.name }}: {{test.name}}</h1>
+                    {% for question in questions %}
+                      <!-- CHECK IF QUESTION BELONGS TEST -->
+                        {% if question.test.pk == test.pk %}
+                          <div class="questions">
+                              <div class="question"> {{ question.question}}</div><br>
+                              <label class="radio-container" for="{{question.optionA.1}}">"{{question.optionA}}"
+                                  <input type="radio" class="radio" id="{{question.optionA.1}}" name="{{question.name}}" value="{{question.optionA.0}}"  required>
+                                  <span class="checkmark"></span>
+                              </label><br>
+
+                              <label class="radio-container" for="{{question.optionB.1}}">"{{question.optionB}}"
+                                  <input type="radio" id="{{question.optionB.1}}" name="{{question.name}}" value="{{question.optionB.0}}" required>
+                                  <span class="checkmark"></span>
+                              </label><br>
+
+                              <label class="radio-container" for="{{question.optionC.1}}">"{{question.optionC}}"
+                                  <input type="radio" id="{{question.optionC.1}}" name="{{question.name}}" value="{{question.optionC.0}}" required>
+                                  <span class="checkmark"></span>
+                              </label><br>
+
+                              <label class="radio-container" for="{{question.optionD.1}}">"{{question.optionD}}"
+                                  <input type="radio" id="{{question.optionD.1}}" name="{{question.name}}" value="{{question.optionD.0}}"  >
+                                  <span class="checkmark"></span>
+                              </label><br>
+
+                          </div>
+                        {% endif %}
+                    {% endfor %}
+                    <h5>Given answers: {{test.user_answers}}</h5>
+
+                {% endfor %}
+
+              </div>
+
+            <!-- TEST RESULTS END/ -->
+
+
+      <!-- SHOW ALL USERS WHO ARE STILL TAKING THE COURSE -->
+      {% elif in_progress_users %}
+        <h3>These people have started modules</h3>
+      <div class="row">
+        {% for user in in_progress_users %}
+          <div class="col-md-6">
+            {{user.owner.get_full_name}}
+          </div>
+          <div class="col-md-6">
+            <form action="{% url 'portal' %}" method='get'>
+              <button type="submit" name="needed_val" value="{{user.owner.id}}" class="btn btn-outline-primary btn-rounded btn-md ml-4">select</button>
+            </form>
+          </div>
+        <hr>
+        {% endfor %}
+      </div>
+
+      <!-- show the USERS FOLDER-->
+      {% elif in_progress %}
+        <h1 align="center">{{ Tests.1.user.get_full_name}}'s Progress</h1>
+
+            <div class="myProgress">
+              <div class="myBar" style="width:{{in_progress}}%;">{{in_progress}}% complete</div>
+            </div>
+
+
+
+      {% else %}
+        <p></p>
+      {% endif %}
+
+    </div>
+    <div class="col-sm-2 sidenav">
+      <div class="well">
+        <p>SOME STUFF</p>
+      </div>
+      <div class="well">
+        <p>SOME STUFF</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="container-fluid text-center">
+  <div class="space"></div>
+    <div class="footer">&copy A plus Home care Agency 2021</div>
+</footer>
+
+</body>
+<script>
+function printDiv(divName) {
+     var printContents = document.getElementById(divName).innerHTML;
+     var originalContents = document.body.innerHTML;
+
+     document.body.innerHTML = printContents;
+
+     window.print();
+
+     document.body.innerHTML = originalContents;
+}
+</script>
+</html>
+

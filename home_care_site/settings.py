@@ -79,6 +79,7 @@ WSGI_APPLICATION = 'home_care_site.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+
 DATABASES = {
 
         'default': {
@@ -95,13 +96,14 @@ DATABASES = {
     }
 
 
+# LOCAL DB
 
 '''DATABASES = {
 
         'default': {
 
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'local_homecare',
+            'NAME': 'homecare',
             'USER': "postgres",
             'PASSWORD': 'Tinashe',
             'HOST': "localhost",
@@ -110,10 +112,6 @@ DATABASES = {
         }
 
     }'''
-
-import dj_database_url
-
-#DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
 
 #'default': {
