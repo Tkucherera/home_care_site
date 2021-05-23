@@ -20,7 +20,12 @@ def module(request):
 
 def test(request):
     # get the tests
+    user_id = request.user.id
     tests = Tests.objects.all()
+    completed_tests = TestComplete.objects.filter(user_id=user_id, test_completion=True)
+    completed_pk_list = []
+    for completed_test in completed_tests:
+        completed_pk_list.append(completed_test.test.id)
     # get the questions
     # get the test id that the user selected
 
@@ -83,7 +88,7 @@ def test(request):
 
             # TODO refine the code
 
-    return render(request, 'Tests.html', {'tests': tests})
+    return render(request, 'Tests.html', {'tests': tests, 'completed_pk_list': completed_pk_list})
 
 
 def training(request):
@@ -259,6 +264,7 @@ def create_answers_list(val):
         answers_list.append(v)
 
     return answers_list
+
 
 
 '''

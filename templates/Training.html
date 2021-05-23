@@ -128,11 +128,6 @@
 
                   <!--Footer-->
                   <div class="modal-footer justify-content-center">
-                   <form action="{% url 'test' %}" method="get">
-                    <button type="submit" name="pk" value="{{test.1.pk}}" class="btn btn-outline-primary btn-rounded btn-md ml-4">Pre-Test</button>
-                    <button type="submit" name="pk" value="{{test.2.pk}}" class="btn btn-outline-primary btn-rounded btn-md ml-4">Training</button>
-                    <button type="submit" name="pk" value="{{test.pk}}" class="btn btn-outline-primary btn-rounded btn-md ml-4">Post-Test</button>
-                   </form>
                     <button type="button" class="btn btn-outline-primary btn-rounded btn-md ml-4" data-dismiss="modal">Close</button>
                   </div>
 
@@ -147,9 +142,10 @@
                 data-toggle="modal" data-target="#modal{{module.pk}}">
                 <div class="modal-footer justify-content-center">
                     <span class="mr-4">{{module.name}}</span>
+                    <button type="button" class="btn btn-outline-primary btn-rounded btn-md ml-4" data-toggle="modal" data-target="#modal{{module.pk}}">Lesson</button>
                   <form action="{% url 'training' %}" method="post">
                       {% csrf_token %}
-                    <button type="submit" class="btn btn-outline-primary btn-rounded btn-md ml-4" value="{{module.pk}}" name="module" data-toggle="modal" data-target="#modal{{module.pk}}">Select</button>
+                    <button type="submit" class="btn btn-outline-primary btn-rounded btn-md ml-4" value="{{module.pk}}" name="module" data-toggle="modal">Tests</button>
                   </form>
                 </div>
             </a>

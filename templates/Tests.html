@@ -9,7 +9,14 @@
         <div class="container">
             {% for test in tests %}
                 <div>
-                    <h3>{{ test.module.name }}: {{test.name}}</h3><br>
+                    {% if test.pk in completed_pk_list %}
+                        <h3>{{ test.module.name }}: {{test.name}}</h3>
+                        <h4 color="gold">Test has been attempted and completed </h4>
+                        <br>
+                    {% else %}
+                        <h3>{{ test.module.name }}: {{test.name}}</h3>
+                        <br>
+                    {% endif %}
                     <!-- Trigger the modal with a button -->
                         <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal{{test.pk}}">Select</button>
                             <!-- Modal -->
