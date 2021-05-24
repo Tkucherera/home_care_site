@@ -14,8 +14,13 @@ def index(request):
 
 
 def module(request):
-    modules = Module.objects.all()
-    return render(request, 'modules.html', {'module': modules})
+    if request.method == 'GET':
+        value = request.GET.get('module')
+        required_test = Tests.objects.filter(module_id=value)
+        required_video = TrainingVideos.objects.filter(module_id=value)
+        required_ppt = TrainingPpt.objects.get(module_id=value)
+
+        return render(request, 'modules.html', {'videos': required_video, 'powerpoint': required_ppt, 'tests': required_test})
 
 
 def test(request):
@@ -102,12 +107,6 @@ def training(request):
             return render(request, 'Training.html', {'modules': modules, 'completed': completed})
         except user_id.DoesNotExist:
             completed = False
-
-    if request.method == 'POST':
-        module = request.POST['module']
-        required_test = Tests.objects.filter(module_id=module)
-        completed = False
-        return render(request, 'Training.html', {'modules': modules, 'tests': required_test})
 
     return render(request, 'Training.html', {'modules': modules, 'completed': completed})
 

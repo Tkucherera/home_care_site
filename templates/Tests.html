@@ -11,7 +11,7 @@
                 <div>
                     {% if test.pk in completed_pk_list %}
                         <h3>{{ test.module.name }}: {{test.name}}</h3>
-                        <h4 color="gold">Test has been attempted and completed </h4>
+                        <h4 style="color:gold">Test has been attempted and completed </h4>
                         <br>
                     {% else %}
                         <h3>{{ test.module.name }}: {{test.name}}</h3>

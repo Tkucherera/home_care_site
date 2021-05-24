@@ -99,6 +99,11 @@ hr{
   background: lightgrey;
 }
 
+.ppt {
+    width: 1186px;
+    height: 691px;
+}
+
 @media only screen and (max-width: 1000px) {
   .circle {
     width: 150px;
@@ -107,6 +112,11 @@ hr{
     font-size: 12px;
 
   }
+
+  .ppt {
+    width: 962px;
+    height: 565px;
+}
 
     .score-circle {
     width: 150px;
@@ -138,6 +148,11 @@ hr{
     font-size: 11px;
 
   }
+
+  .ppt {
+    width: 610px;
+    height: 367px;
+}
 
   #container {
     width: 77%;
@@ -175,6 +190,11 @@ hr{
     align:center;
 
   }
+
+  .ppt {
+    width: 350px;
+    height: 221px;
+}
 
   .score-circle {
     width: 150px;

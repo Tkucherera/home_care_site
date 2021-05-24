@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 class Module(models.Model):
     name = models.CharField(max_length=200)
     module_number = models.IntegerField(help_text='enter the number of module')
+    img = models.ImageField(upload_to='images/' , blank=True)
 
     def __str__(self):
         return self.name
@@ -55,6 +56,7 @@ class TrainingVideos(models.Model):
 
 
 class TrainingPpt(models.Model):
+    module = models.ForeignKey(Module, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
     topic = models.CharField(max_length=100, help_text='if no topic put N/A')
     duration = models.IntegerField(help_text='input time takes to complete training in mins')
