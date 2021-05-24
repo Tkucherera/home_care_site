@@ -239,10 +239,10 @@ def portal(request):
             test_answers = render_answer_template(tests_complete)
             if CourseCompletion.objects.filter(owner_id=val).exists():
                 if CourseCompletion.objects.get(owner_id=val).complete:
-                    completed = ((TestComplete.objects.filter(user_id=val, test_completion=True).count()) / 16) * 100
+                    completed = round(((TestComplete.objects.filter(user_id=val, test_completion=True).count()) / 7) * 100, 0)
                     return render(request, 'administrator.html', {'Tests': tests, 'Test_complete': tests_complete, 'completed': completed, 'test_answers': test_answers, 'questions': questions})
                 else:
-                    in_progress = completed = ((TestComplete.objects.filter(user_id=val, test_completion=True).count()) / 16) * 100
+                    in_progress = round(((TestComplete.objects.filter(user_id=val, test_completion=True).count()) / 7) * 100, 0)
                     return render(request, 'administrator.html', {'Tests': tests, 'in_progress': in_progress})
 
     return render(request, 'administrator.html')

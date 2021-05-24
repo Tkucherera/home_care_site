@@ -73,7 +73,7 @@ class TestComplete(models.Model):
     test = models.ForeignKey(Tests, on_delete=models.CASCADE)
     test_grade = models.IntegerField(null=True, blank=True)
     test_completion = models.BooleanField(default=False)
-    user_answers = models.CharField(max_length=100, blank=True)
+    user_answers = models.TextField(blank=True)
 
     def __str__(self):
         return f"{self.user.last_name} test: {self.test.pk}"
