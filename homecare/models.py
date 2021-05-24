@@ -82,7 +82,7 @@ class TestComplete(models.Model):
 class CourseCompletion(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     modules = models.ManyToManyField(Module)
-    complete = models.BooleanField(default=True)
+    complete = models.BooleanField(default=False)
 
     def __str__(self):
         return self.owner.username

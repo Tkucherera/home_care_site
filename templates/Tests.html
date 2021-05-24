@@ -8,16 +8,11 @@
         <!-- SHOW A LIST OF ALL THE TESTS -->
         <div class="container">
             {% for test in tests %}
-                <div>
-                    {% if test.pk in completed_pk_list %}
-                        <h3>{{ test.module.name }}: {{test.name}}</h3>
-                        <h4 style="color:gold">Test has been attempted and completed </h4>
+                {% if test.name == 'Post-test' %}
+                        <h3>{{ test.module.name }}: {{ test.name }}</h3>
                         <br>
-                    {% else %}
-                        <h3>{{ test.module.name }}: {{test.name}}</h3>
-                        <br>
-                    {% endif %}
                     <!-- Trigger the modal with a button -->
+
                         <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal{{test.pk}}">Select</button>
                             <!-- Modal -->
                               <div class="modal fade" id="myModal{{test.pk}}" role="dialog">
@@ -46,17 +41,16 @@
                                         </div>
                                     </div>
                                   </div>
-
-                                </div>
                               </div>
+                    </div>
 
 
-                </div>
                 <hr>
+                {% endif %}
             {% endfor %}
 
         </div>
-{% endif%}
+{% endif %}
 
 {% if score %}
     <div id="score-container">
@@ -88,7 +82,7 @@
                     </div>
                     {% else %}
                         <a href="{% url 'training'%}">
-                            <button type="submit" class="btn btn-outline-primary btn-rounded btn-md ml-4" }>Go to Modules</button>
+                            <button type="submit" class="btn btn-outline-primary btn-rounded btn-md ml-4">Go to Modules</button>
                         </a>
 
                     {% endif %}

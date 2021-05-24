@@ -1,9 +1,7 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from .models import *
 # Create your views here.
-# index view
 import datetime
-import json
 
 
 def index(request):
@@ -104,7 +102,7 @@ def test(request):
             return render(request, 'Tests.html', {'score': results, 'completed': completed})
 
             # TODO refine the code
-
+    print('outershell')
     return render(request, 'Tests.html', {'tests': tests, 'completed_pk_list': completed_pk_list})
 
 
@@ -114,7 +112,7 @@ def training(request):
     user_id = request.user.id
     if request.method == 'GET':
         try:
-            completed = ((TestComplete.objects.filter(user_id=user_id, test_completion=True).count()) / 16) * 100
+            completed = ((TestComplete.objects.filter(user_id=user_id, test_completion=True).count()) / 7) * 100
             print(' the percentage is ', completed)
             return render(request, 'Training.html', {'modules': modules, 'completed': completed})
         except user_id.DoesNotExist:
@@ -195,7 +193,7 @@ def module_completion(user_id, module_id):
             print('the leght of len tests is:', len(tests))
 
     else:
-        CourseCompletion.objects.create(owner_id=user_id)
+        CourseCompletion.objects.create(owner_id=user_id, )
         if len(tests) == 1:
             cs = CourseCompletion.objects.get(owner_id=user_id)
             cs.modules.add(module_taken)
@@ -210,8 +208,8 @@ def check_modules(user_id):
         completion = CourseCompletion.objects.get(owner_id=user_id)
         num_completed = completion.modules.count()
         if num_completed == 7:          # remember to change this to 8
-           # completion.complete = True
-            #completion.save()
+            completion.complete = True
+            completion.save()
             return_val = 'complete'
             return return_val
         else:
