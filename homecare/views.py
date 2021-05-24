@@ -112,7 +112,7 @@ def training(request):
     user_id = request.user.id
     if request.method == 'GET':
         try:
-            completed = ((TestComplete.objects.filter(user_id=user_id, test_completion=True).count()) / 7) * 100
+            completed = round(((TestComplete.objects.filter(user_id=user_id, test_completion=True).count()) / 7) * 100,0)
             print(' the percentage is ', completed)
             return render(request, 'Training.html', {'modules': modules, 'completed': completed})
         except user_id.DoesNotExist:
