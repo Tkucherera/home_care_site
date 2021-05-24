@@ -234,7 +234,7 @@ def portal(request):
 
         else:
             questions = Question.objects.all()
-            tests = Tests.objects.filter(name='Post-test')
+            tests = Tests.objects.all()
             tests_complete = TestComplete.objects.filter(user_id=val)
             test_answers = render_answer_template(tests_complete)
             if CourseCompletion.objects.filter(owner_id=val).exists():

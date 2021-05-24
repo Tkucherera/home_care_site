@@ -159,7 +159,8 @@
             <!-- SHOW TEST RESULTS HERE -->
               <div id="printableTests">
                 <!-- Iterate through the tests and also print the questions -->
-                {% for test in Test_complete %}
+                {% for test in Tests %}
+                  {% if test.name == 'Post-test' %}
                 <h1 style="text-align:center">{{ test.module.name }}: {{test.name}}</h1>
                     {% for question in questions %}
                       <!-- CHECK IF QUESTION BELONGS TEST -->
@@ -188,9 +189,10 @@
 
                           </div>
                         {% endif %}
+
                     {% endfor %}
                     <h5>Given answers: {{test.user_answers}}</h5>
-
+                    {% endif %}
                 {% endfor %}
 
               </div>
@@ -217,7 +219,7 @@
 
       <!-- show the USERS FOLDER-->
       {% elif in_progress %}
-        <h1 align="center">{{ Tests.1.user.get_full_name}}'s Progress</h1>
+        <h1 align="center">{{ Test_complete.1.user.get_full_name}}'s Progress</h1>
 
             <div class="myProgress">
               <div class="myBar" style="width:{{in_progress}}%;">{{in_progress}}% complete</div>
