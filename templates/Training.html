@@ -1,5 +1,4 @@
 {% load static %}
-{% static "media" as baseUrl %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -110,7 +109,7 @@
           <div class="col-lg-4 col-md-12 mb-4">
 
 
-            <a><img class="img-fluid z-depth-1"  style="cursor:pointer;height:200px;width:100%" src="{{video.img.url}}" alt="{{module.name}}">
+            <a><img class="img-fluid z-depth-1"  style="cursor:pointer;height:200px;width:100%" src="{{module.img.url}}" alt="{{module.name}}">
                 <div class="modal-footer justify-content-center">
                     <form action="{% url 'module' %}" method="get">
                         <button type="submit" class="btn btn-outline-primary btn-rounded btn-md ml-4" value="{{module.pk}}" name="module">Select</button>
