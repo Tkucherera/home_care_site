@@ -4,6 +4,23 @@
 {% block content %}
 
         <div class="container">
+            <div class="row">
+                         <!-- Grid column -->
+                        {% for test in tests%}
+                            {% if test.name == 'Pre-test' %}
+                                {% if not pretest_done %}
+                                <div class="col-lg-4 col-md-12 mb-4">
+                                    <form action="{% url 'test' %}" method='get'>
+                                        <button type="submit" name="pk" value="{{test.pk}}" class="btn btn-outline-primary btn-rounded btn-md ml-4">
+                                             take {{test.name}}</button>
+                                    </form>
+
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+
             <h1 align="center">Training Powerpoint and Videos</h1>
     <!-- Powerpoint -->
             <section>
@@ -18,10 +35,11 @@
             </div>
             {% endfor %}
 
-            <h1 style="text-align:center;margin-bottom:20px;margin-top:50px;">Take {{tests.1.module.name}} Tests</h1><hr>
+            <h1 style="text-align:center;margin-bottom:20px;margin-top:50px;">Take {{tests.1.module.name}} Test</h1><hr>
                     <div class="row">
                          <!-- Grid column -->
                         {% for test in tests%}
+                            {% if test.name == 'Post-test' %}
                         <div class="col-lg-4 col-md-12 mb-4">
                             <form action="{% url 'test' %}" method='get'>
                                 <button type="submit" name="pk" value="{{test.pk}}" class="btn btn-outline-primary btn-rounded btn-md ml-4">
@@ -29,6 +47,7 @@
                             </form>
 
                         </div>
+                        {% endif %}
                         {% endfor %}
                     </div>
         </div>
