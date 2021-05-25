@@ -1,5 +1,5 @@
 {% load static %}
-{% static "media" as baseUrl %}
+
 
 
 
@@ -161,7 +161,7 @@
                 <!-- Iterate through the tests and also print the questions -->
                 {% for test in Tests %}
                   {% if test.name == 'Post-test' %}
-                <h1 style="text-align:center">{{ test.module.name }}: {{test.name}}</h1>
+                        <h1 style="text-align:center">{{ test.module.name }}: {{test.name}}</h1>
                     {% for question in questions %}
                       <!-- CHECK IF QUESTION BELONGS TEST -->
                         {% if question.test.pk == test.pk %}
@@ -189,10 +189,10 @@
 
                           </div>
                         {% endif %}
-
                     {% endfor %}
-                    <h5>Given answers: {{test.user_answers}}</h5>
-                    {% endif %}
+
+                  {% endif %}
+
                 {% endfor %}
 
               </div>
