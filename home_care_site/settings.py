@@ -13,7 +13,10 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 import os
 import django_heroku
+import mimetypes
 
+
+mimetypes.add_type("text/css", ".css", True)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,9 +29,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("HOMECARE_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = (os.environ.get("DEBUG_VALUE") == 'True')
-
-ALLOWED_HOSTS = ['*']
+DEBUG = False  #(os.environ.get("DEBUG_VALUE") == 'True')
+#DEBUG_PROPAGATE_EXCEPTIONS = True
+ALLOWED_HOSTS = ['http://127.0.0.1:8000/']
 
 
 # Application definition
@@ -48,6 +51,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -80,21 +84,6 @@ WSGI_APPLICATION = 'home_care_site.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 
-DATABASES = {
-
-        'default': {
-
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': os.environ.get("DATABASE_NAME"),
-            'USER': os.environ.get("USER"),
-            'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
-            'HOST': os.environ.get('HOST'),
-            'PORT': '5432',
-
-        }
-
-    }
-
 
 # LOCAL DB
 
@@ -114,14 +103,20 @@ DATABASES = {
     }'''
 
 
-#'default': {
+DATABASES = {
 
-#        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#        'NAME': os.environ.get('DATABASE_NAME_HOMECARE'),
-#       'USER': os.environ.get('HEROKU_POSTGRES_USER_HOMECARE'),
-#        'PASSWORD': os.environ.get('POSTGRES_PASS_HOMECARE'),
-#       'HOST': os.environ.get('HEROKU_HOST_HOMECARE'),
-##  }
+        'default': {
+
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': os.environ.get("DATABASE_NAME"),
+            'USER': os.environ.get("USER"),
+            'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
+            'HOST': os.environ.get('HOST'),
+            'PORT': '5432',
+
+        }
+
+    }
 
 
 # Password validation
@@ -181,6 +176,7 @@ AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME_HOMECARE')
 AWS_S3_FILE_OVERWRITE = False   # so that uploads with the same name are not overwritten
 AWS_DEFAULT_ACL = None
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
 
 
 django_heroku.settings(locals())
