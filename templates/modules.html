@@ -8,25 +8,29 @@
                          <!-- Grid column -->
                         {% for test in tests%}
                             {% if test.name == 'Pre-test' %}
-                                {% if not pretest_done %}
-                                <div class="col-lg-4 col-md-12 mb-4">
-                                    <form action="{% url 'test' %}" method='get'>
-                                        <button type="submit" name="pk" value="{{test.pk}}" class="btn btn-outline-primary btn-rounded btn-md ml-4">
-                                             take {{test.name}}</button>
-                                    </form>
+                                {% if not pretest_done  %}
 
-                                </div>
+                                    <h3> Take <b>Pre-test</b> First </h3>
+                                    <div class="col-lg-4 col-md-12 mb-4">
+                                        <form action="{% url 'test' %}" method='get'>
+                                            <button type="submit" name="pk" value="{{test.pk}}" class="btn btn-outline-primary btn-rounded btn-md ml-4">
+                                                 take {{test.name}}</button>
+                                        </form>
+                                    </div>
                             {% endif %}
                         {% endif %}
                         {% endfor %}
                     </div>
 
+            {% if pretest_done %}
             <h1 align="center">Training Powerpoint and Videos</h1>
-    <!-- Powerpoint -->
+                <!-- Powerpoint -->
             <section>
+                {% for powerpoint in powerpoints %}
                 <div style="margin-bottom:50px" class="ppt">
                     <iframe src="{{powerpoint.ppt}}" frameborder="0"  width="100%" height="100%"></iframe>
                 </div>
+                {% endfor %}
             </section>
             <hr><h1 style="text-align:center;margin-bottom:20px;margin-top:50px;"> Video(s)</h1><hr>
             {% for video in videos %}
@@ -50,6 +54,7 @@
                         {% endif %}
                         {% endfor %}
                     </div>
+            {% endif %}
         </div>
 
 {% endblock %}

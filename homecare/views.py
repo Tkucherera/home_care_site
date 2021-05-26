@@ -15,10 +15,7 @@ def module(request):
     if request.method == 'GET':
         value = request.GET.get('module')
         required_test = Tests.objects.filter(module_id=value)
-        required_video = TrainingVideos.objects.filter(module_id=value)
-        required_ppt = TrainingPpt.objects.get(module_id=value)
-
-        return render(request, 'modules.html', {'videos': required_video, 'powerpoint': required_ppt, 'tests': required_test})
+        return render(request, 'modules.html', {'tests': required_test})
 
 
 def test(request):
@@ -69,10 +66,9 @@ def test(request):
             value = Tests.objects.get(pk=test_id).module.id
             required_test = Tests.objects.filter(module_id=value)
             required_video = TrainingVideos.objects.filter(module_id=value)
-            required_ppt = TrainingPpt.objects.get(module_id=value)
-            pretest = True
-
-            return render(request, 'modules.html', {'videos': required_video, 'powerpoint': required_ppt, 'tests': required_test, 'prestest_done': pretest})
+            required_ppt = TrainingPpt.objects.filter(module_id=value)
+            pretest_done = True
+            return render(request, 'modules.html', {'videos': required_video, 'powerpoints': required_ppt, 'tests': required_test, 'pretest_done': pretest_done})
 
         else:
             questions = Question.objects.all().filter(test_id=test_id)
