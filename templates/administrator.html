@@ -159,12 +159,12 @@
             <!-- SHOW TEST RESULTS HERE -->
               <div id="printableTests">
                 <!-- Iterate through the tests and also print the questions -->
-                {% for test in Tests %}
-                  {% if test.name == 'Post-test' %}
+                {% for test in Test_complete %}
+                  {% if test.test.name == 'Post-test' %}
                         <h1 style="text-align:center">{{ test.module.name }}: {{test.name}}</h1>
                     {% for question in questions %}
                       <!-- CHECK IF QUESTION BELONGS TEST -->
-                        {% if question.test.pk == test.pk %}
+                        {% if question.test.pk == test.test.pk %}
                           <div class="questions">
                               <div class="question"> {{ question.question}}</div><br>
                               <label class="radio-container" for="{{question.optionA.1}}">"{{question.optionA}}"
@@ -190,7 +190,7 @@
                           </div>
                         {% endif %}
                     {% endfor %}
-
+                        {{ test.user_answers }}
                   {% endif %}
 
                 {% endfor %}
