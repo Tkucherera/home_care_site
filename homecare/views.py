@@ -60,10 +60,9 @@ def test(request):
     if request.method == 'POST':
         # first get the correct answers
         test_id = request.POST['test_submit']
-
+        value = Tests.objects.get(pk=test_id).module.id
         # check if test is pre/post test
         if Tests.objects.get(pk=test_id).name == 'Pre-test':
-            value = Tests.objects.get(pk=test_id).module.id
             required_test = Tests.objects.filter(module_id=value)
             required_video = TrainingVideos.objects.filter(module_id=value)
             required_ppt = TrainingPpt.objects.filter(module_id=value)
@@ -72,6 +71,7 @@ def test(request):
 
         else:
             questions = Question.objects.all().filter(test_id=test_id)
+            module = Module.objects.get(id=value)
             user_answers = []
             # get the module_id
             module_id = Tests.objects.get(pk=test_id).module.id
@@ -95,7 +95,7 @@ def test(request):
 
             # Check if course if completed
             completed = check_modules(user_id)
-            return render(request, 'Tests.html', {'score': results, 'completed': completed})
+            return render(request, 'Tests.html', {'score': results, 'completed': completed, 'module': module})
 
             # TODO refine the code
     print('outershell')
@@ -167,14 +167,17 @@ def update_db(score, test_id, user_id, module_id, user_answers):  # this functio
 
 
 def certificate(request):
+    user_id = request.user.id
+    course_completion = CourseCompletion.objects.get(owner_id=user_id)
     if request.method == 'POST':
         post = request.POST['certificate']
         # convert from str back to dict
         score = eval(post)
         fullname = request.user.get_full_name
         date = datetime.date.today()
+        return render(request, 'certificate.html', {'fullname': fullname, 'date': date, 'score': score, 'course_completion': course_completion})
 
-        return render(request, 'certificate.html', {'fullname': fullname, 'date': date, 'score': score})
+    return render(request, 'certificate.html', {'course_completion': course_completion})
 
 
 def module_completion(user_id, module_id):
@@ -235,8 +238,9 @@ def portal(request):
             test_answers = render_answer_template(tests_complete)
             if CourseCompletion.objects.filter(owner_id=val).exists():
                 if CourseCompletion.objects.get(owner_id=val).complete:
+                    course_completion = CourseCompletion.objects.get(owner_id=val)
                     completed = round(((TestComplete.objects.filter(user_id=val, test_completion=True).count()) / 7) * 100, 0)
-                    return render(request, 'administrator.html', {'Tests': tests, 'Test_complete': tests_complete, 'completed': completed, 'test_answers': test_answers, 'questions': questions})
+                    return render(request, 'administrator.html', {'Tests': tests, 'Test_complete': tests_complete, 'completed': completed, 'test_answers': test_answers, 'questions': questions, 'course_completion': course_completion})
                 else:
                     in_progress = round(((TestComplete.objects.filter(user_id=val, test_completion=True).count()) / 7) * 100, 0)
                     return render(request, 'administrator.html', {'Tests': tests, 'in_progress': in_progress})

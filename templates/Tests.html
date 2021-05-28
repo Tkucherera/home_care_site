@@ -89,6 +89,33 @@
             </div>
         </div>
     </div>
+
+{% if score.grade == 'pass' %}
+    <div class="container">
+
+        <hr> <h1 align="center">Module Completion Certificate </h1><hr>
+        <hr><input type="button"  style="margin-left:30px;" class="btn btn-outline-primary btn-rounded btn-md ml-4" onclick="printDiv('ModuleArea')" value="print module certificates" /><hr>
+
+                  <div id="ModuleArea" style="margin: 0 auto auto;padding: 5px;">
+                    <div style="100%; padding:20px; text-align:center; border: 10px solid #787878">
+
+                        <div style="width:98%; padding:20px; text-align:center; border: 5px solid #787878">
+                               <span style="font-size:50px; font-weight:bold">Certificate of Module Completion</span>
+                               <br><br><br>
+                               <span style="font-size:25px"><i>This is to certify that</i></span>
+                               <br><br><br>
+                               <span style="font-size:30px"><b>{{user.get_full_name}}</b></span>
+                                <br><br>
+                               <span style="font-size:25px"><i>has completed the Module</i></span>
+                               <br><br><br>
+                               <span style="font-size:30px"> <b> {{module.name}} </b> </span> <br><br><br>
+                              <span style="font-size:30px"></span><br><br><br>
+                        </div>
+                    </div>
+
+    </div>
+    </div>
+{% endif %}
 {% endif %}
 
 <div class="container">
@@ -134,4 +161,17 @@
 {% else %}
 <h1>Please Login</h1>
 {% endif %}
+
+        <script>
+function printDiv(divName) {
+     var printContents = document.getElementById(divName).innerHTML;
+     var originalContents = document.body.innerHTML;
+
+     document.body.innerHTML = printContents;
+
+     window.print();
+
+     document.body.innerHTML = originalContents;
+}
+</script>
 {% endblock %}

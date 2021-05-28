@@ -136,6 +136,7 @@
               <!-- CERTIFICATE  -->
               <div style="display:inline-block; margin-top:20px;">
                 <hr><input type="button"  style="margin-left:30px;" class="btn btn-outline-primary btn-rounded btn-md ml-4" onclick="printDiv('printableArea')" value="print certificate" />
+                <input type="button"  style="margin-left:30px;" class="btn btn-outline-primary btn-rounded btn-md ml-4" onclick="printDiv('ModuleArea')" value="print module certificates" />
                 <input type="button"  style="margin-left:30px;" class="btn btn-outline-primary btn-rounded btn-md ml-4" onclick="printDiv('printableTests')" value="print Tests" /> <hr>
               </div>
                 <div id="printableArea" style="margin: 0 auto auto;padding: 5px;">
@@ -146,13 +147,32 @@
                                <span style="font-size:25px"><i>This is to certify that</i></span>
                                <br><br>
                                <span style="font-size:30px"><b>{{Test_complete.1.user.get_full_name}}</b></span><br/><br/>
-                               <span style="font-size:25px"><i>has completed the course</i></span> <br/><br/>
-                               <span style="font-size:30px"> <b> Home Patient Care </b> </span> <br/><br
-                               <span style="font-size:25px"><i>dated</i></span><br>
-                              {{date}}
+                               <span style="font-size:25px"><i>has completed the course</i></span> <br/><br/><br>
+                               <span style="font-size:30px"> <b> Home Patient Care </b> </span> <br/><br><br>
                               <span style="font-size:30px"></span>
                         </div>
                     </div>
+                </div>
+
+                  <!-- Module certificate -->
+                  <hr> <h1 align="center">Module Completion Certificates </h1><hr>
+                  <div id="ModuleArea" style="margin: 0 auto auto;padding: 5px;">
+
+                   {% for module in course_completion.modules.all %}
+                    <div style="width:900px; height:600px; padding:20px; text-align:center; border: 10px solid #787878">
+
+                        <div style="width:850px; height:550px; padding:20px; text-align:center; border: 5px solid #787878">
+                               <span style="font-size:50px; font-weight:bold">Certificate of Module Completion</span>
+                               <br><br>
+                               <span style="font-size:25px"><i>This is to certify that</i></span>
+                               <br><br>
+                               <span style="font-size:30px"><b>{{Test_complete.1.user.get_full_name}}</b></span><br/><br/>
+                               <span style="font-size:25px"><i>has completed the Module</i></span> <br/><br/><br>
+                               <span style="font-size:30px"> <b> {{module.name}} </b> </span> <br/><br><br>
+                              <span style="font-size:30px"></span>
+                        </div>
+                    </div>
+                   {% endfor %}
                 </div>
               </div>
 
