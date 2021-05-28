@@ -168,7 +168,10 @@ def update_db(score, test_id, user_id, module_id, user_answers):  # this functio
 
 def certificate(request):
     user_id = request.user.id
-    course_completion = CourseCompletion.objects.get(owner_id=user_id)
+    try:
+        course_completion = CourseCompletion.objects.get(owner_id=user_id)
+    except CourseCompletion.DoesNotExist:
+        course_completion = None
     if request.method == 'POST':
         post = request.POST['certificate']
         # convert from str back to dict

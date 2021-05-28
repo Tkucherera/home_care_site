@@ -6,6 +6,7 @@
 <style type="text/css" media="print">
   @page { size: landscape; }
 </style>
+{% if not course_completion == None %}
 {% if course_completion.complete %}
 <div class="container">
 <input type="button"  style="margin-left:30px;" class="btn btn-outline-primary btn-rounded btn-md ml-4" onclick="printDiv('printableArea')" value="print certificate" /><hr>
@@ -49,6 +50,10 @@
                     </div>
                    {% endfor %}
                 </div>
+
+    {% else %}
+    <h1 align="center">You havent completed any modules </h1>
+    {% endif %}
 </div>
 
 <script>
