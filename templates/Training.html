@@ -23,6 +23,17 @@
   line-height: 30px;
   color: white;
 }
+
+.center-module {
+  margin: auto;
+  color: white;
+  width: 60%;
+  text-align:center;
+  hight: 100%;
+  border: 3px solid #eee;
+  background: black;
+  padding: 10px;
+}ou
 </style>
  <body>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -98,7 +109,10 @@
           <!-- Grid column -->
           <div class="col-lg-4 col-md-12 mb-4">
 
-
+              <div class="center-module">
+                <p>{{module.name}}</p>
+              </div>
+            <!--
             <a><img class="img-fluid z-depth-1"  style="cursor:pointer;height:200px;width:100%" src="{{module.img.url}}" alt="{{module.name}}">
                 <div class="modal-footer justify-content-center">
                     <form action="{% url 'module' %}" method="get">
@@ -106,7 +120,7 @@
                     </form>
                 </div>
             </a>
-
+            -->
           </div>
             {% endfor %}
 
